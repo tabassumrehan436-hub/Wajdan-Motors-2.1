@@ -25,8 +25,8 @@ export default function CarDetailPage() {
         const res = await fetch(`/api/get-car.php?id=${encodeURIComponent(id)}`);
         if (!res.ok) throw new Error('Not found');
         const body = await res.json();
-        if (body && body.data) {
-          setCar(body.data);
+        if (body && body.id) {
+          setCar(body);
           return;
         }
       } catch (err) {
