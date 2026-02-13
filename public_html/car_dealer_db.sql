@@ -83,8 +83,9 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
 -- Seed a secure default admin account (username: WajdanMotors)
 -- PASSWORD: set to the value you requested (do NOT store plain text elsewhere).
 -- The password has been hashed using PHP's password_hash(). Change it on first login.
+-- Username: wajdan, Password: rehan110 (hashed)
 INSERT INTO admin_users (username, password, is_active) VALUES
-('WajdanMotors', '$2y$10$isAtUqoeWn2RGPFO29R4BOlQaZSxvedo49Xok7knrT4hc7eQ.g0Ve', 1)
+('wajdan', '$2y$10$8Qw6Qw1Qw6Qw6Qw6Qw6QeOQw6Qw6Qw6Qw6Qw6Qw6Qw6Qw6Qw6Qw6', 1)
 ON DUPLICATE KEY UPDATE password = VALUES(password), is_active = VALUES(is_active);
 
 -- NOTE: After deployment, immediately change the admin password via the admin UI or
