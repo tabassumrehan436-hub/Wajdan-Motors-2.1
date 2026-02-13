@@ -81,11 +81,11 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Seed a secure default admin account (username: admin)
+-- Seed a secure default admin account (username: WajdanMotors)
 -- PASSWORD: set to the value you requested (do NOT store plain text elsewhere).
 -- The password has been hashed using PHP's password_hash(). Change it on first login.
 INSERT INTO admin_users (username, password, is_active) VALUES
-('admin', '$2y$10$isAtUqoeWn2RGPFO29R4BOlQaZSxvedo49Xok7knrT4hc7eQ.g0Ve', 1)
+('WajdanMotors', '$2y$10$isAtUqoeWn2RGPFO29R4BOlQaZSxvedo49Xok7knrT4hc7eQ.g0Ve', 1)
 ON DUPLICATE KEY UPDATE password = VALUES(password), is_active = VALUES(is_active);
 
 -- NOTE: After deployment, immediately change the admin password via the admin UI or
