@@ -29,6 +29,7 @@ try {
 
     // successful login -> create session + CSRF token
     if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    session_regenerate_id(true);
     $_SESSION['admin_id'] = (int)$row['id'];
     $_SESSION['admin_username'] = $row['username'];
     $_SESSION['csrf_token'] = bin2hex(random_bytes(24));
