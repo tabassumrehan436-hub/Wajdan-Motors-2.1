@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { getCars, type Car } from "@/lib/carsData";
+import { useBackendCars, type Car } from "@/hooks/useBackendCars";
 import { useState, useEffect } from "react";
 
 interface InventoryProps {
@@ -26,44 +26,46 @@ export default function Inventory({
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [inventory, setInventory] = useState<Car[]>([]);
 
+  const { cars, loading } = useBackendCars();
+
   useEffect(() => {
-    setInventory(getCars().filter(car => car.status === "available"));
-  }, []);
+    setInventory((cars || []).filter((car) => car.status === 'available'));
+  }, [cars]);
 
   // Filter cars based on all criteria
   const filteredCars = inventory.filter((car) => {
     // Search query filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      const matchesSearch = 
+      const matchesSearch =
         car.name.toLowerCase().includes(query) ||
-        car.year.includes(query) ||
-        car.specs.toLowerCase().includes(query);
+        String(car.year ?? "").includes(query) ||
+        String(car.mileage ?? "").toLowerCase().includes(query);
       if (!matchesSearch) return false;
     }
 
     // Make filter
-    if (selectedMake !== "all" && car.make !== selectedMake) {
+    if (selectedMake !== "all" && (car.make ?? "") !== selectedMake) {
       return false;
     }
 
     // Body type filter
-    if (selectedBodyType !== "all" && car.bodyType !== selectedBodyType) {
+    if (selectedBodyType !== "all" && ((car.body_type as string) ?? "") !== selectedBodyType) {
       return false;
     }
 
     // Year filter
     if (selectedYear !== "all") {
       if (selectedYear === "older") {
-        if (parseInt(car.year) > 2021) return false;
+        if (Number(car.year) > 2021) return false;
       } else {
-        if (car.year !== selectedYear) return false;
+        if (String(car.year) !== selectedYear) return false;
       }
     }
 
     // Price filter
     if (selectedPrice !== "all") {
-      const price = car.priceNum;
+      const price = Number(car.price ?? 0);
       switch (selectedPrice) {
         case "under10":
           if (price >= 10000000) return false;
@@ -92,10 +94,10 @@ export default function Inventory({
       addToWishlist({
         id: car.id,
         name: car.name,
-        price: car.price,
-        image: car.image,
-        year: car.year,
-        mileage: car.mileage,
+        price: String(car.price ?? ''),
+        primary_image: car.primary_image || car.images?.[0] || '/uploads/placeholder.png',
+        year: String(car.year ?? ''),
+        mileage: String(car.mileage ?? ''),
       });
     }
   };
@@ -190,12 +192,12 @@ export default function Inventory({
                       {/* Image */}
                       <div className="h-auto sm:h-32 md:h-40 relative overflow-hidden bg-secondary p-3 sm:p-0 flex items-center justify-center">
                         <img
-                          src={car.image}
+                          src={car.primary_image || car.images?.[0] || "/uploads/placeholder.png"}
                           alt={car.name}
                           className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
                         />
                         <span className="absolute bottom-1 sm:bottom-2 right-1 sm:right-2 bg-foreground text-background text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:py-1 rounded">
-                          {car.tag}
+                          {String(car.year ?? "")}
                         </span>
                         {/* Wishlist Button */}
                         <motion.button
@@ -221,10 +223,10 @@ export default function Inventory({
                       {/* Content */}
                       <div className="p-3 sm:p-4">
                         <h3 className="font-bold text-foreground text-xs sm:text-sm mb-1 group-hover:text-primary transition-colors line-clamp-2">{car.name}</h3>
-                        <p className="text-[11px] sm:text-xs text-muted-foreground mb-3 sm:mb-4">{car.specs}</p>
+                        <p className="text-[11px] sm:text-xs text-muted-foreground mb-3 sm:mb-4">{`${car.mileage ?? ""} • ${car.transmission ?? ""}`}</p>
                         
                         <div className="flex justify-between items-center">
-                          <span className="text-primary font-bold text-xs sm:text-sm">{car.price}</span>
+                          <span className="text-primary font-bold text-xs sm:text-sm">{car.price ? `PKR ${Number(car.price).toLocaleString()}` : 'Contact for price'}</span>
                           <span className="text-[10px] sm:text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                             Details →
                           </span>

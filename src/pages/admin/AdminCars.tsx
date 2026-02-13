@@ -17,7 +17,7 @@ export default function AdminCars() {
 
   const filteredCars = cars.filter((car) =>
     car.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    car.make.toLowerCase().includes(searchQuery.toLowerCase())
+    (car.make ?? "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleAddCar = async (data: Omit<Car, "id" | "created_at" | "updated_at">) => {
@@ -42,7 +42,7 @@ export default function AdminCars() {
     }
   };
 
-  const handleDeleteCar = async (id: string | number, name: string) => {
+  const handleDeleteCar = async (id: number, name: string) => {
     if (confirm(`Are you sure you want to delete "${name}"?`)) {
       const result = await deleteCar(id);
       if (result.success) {
@@ -145,7 +145,7 @@ export default function AdminCars() {
                         <td className="p-4">
                           <div className="flex items-center gap-3">
                             <img
-                              src={car.image}
+                              src={car.primary_image || car.images?.[0] || '/uploads/placeholder.png'}
                               alt={car.name}
                               className="w-14 h-10 rounded-lg object-cover"
                             />

@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 
-// Matches backend schema exactly (fields returned by API)
+// Matches backend schema exactly (fields returned by API) — single source of truth Car type
 export interface Car {
-  id: number | string;
+  id: number;                      // DB primary key — always a number
   name: string;
   make?: string | null;
   body_type?: string | null;
   year?: number | null;
   price?: number | null;
-  mileage?: string | null;
-  image?: string | null; // maps to primary_image
+  mileage?: number | null;         // mileage stored as number
+  primary_image?: string | null;   // use backend primary_image instead of legacy `image`
   images?: string[];
   status?: string | null;
   engine?: string | null;
@@ -18,7 +18,7 @@ export interface Car {
   color?: string | null;
   seating?: number | null;
   description?: string | null;
-  features?: string | null; // backend stores as TEXT (string or comma list)
+  features?: string | null;        // backend stores as TEXT (string or comma list)
   created_at?: string | null;
   updated_at?: string | null;
 }
@@ -26,21 +26,21 @@ export interface Car {
 // Normalizer used everywhere to keep mapping consistent
 function normalizeCar(api: any): Car {
   return {
-    id: api.id,
-    name: api.name,
+    id: Number(api.id),
+    name: String(api.name),
     make: api.make ?? null,
     body_type: api.body_type ?? null,
-    year: api.year !== null ? (api.year ? Number(api.year) : null) : null,
-    price: api.price !== null ? (api.price ? Number(api.price) : null) : null,
-    mileage: api.mileage ?? null,
-    image: api.primary_image ?? (Array.isArray(api.images) && api.images[0]) ?? null,
+    year: api.year !== null && api.year !== undefined ? Number(api.year) : null,
+    price: api.price !== null && api.price !== undefined ? Number(api.price) : null,
+    mileage: api.mileage !== null && api.mileage !== undefined ? Number(api.mileage) : null,
+    primary_image: api.primary_image ?? (Array.isArray(api.images) && api.images[0]) ?? null,
     images: Array.isArray(api.images) ? api.images : (api.images ? [api.images] : []),
     status: api.status ?? null,
     engine: api.engine ?? null,
     transmission: api.transmission ?? null,
     fuel_type: api.fuel_type ?? null,
     color: api.color ?? null,
-    seating: api.seating !== null ? (api.seating ? Number(api.seating) : null) : null,
+    seating: api.seating !== null && api.seating !== undefined ? Number(api.seating) : null,
     description: api.description ?? null,
     features: api.features ?? null,
     created_at: api.created_at ?? null,
@@ -53,8 +53,8 @@ interface UseBackendCarsReturn {
   loading: boolean;
   error: string | null;
   addCar: (data: Omit<Car, 'id' | 'created_at' | 'updated_at'>) => Promise<{ success: boolean; error?: string }>;
-  updateCar: (id: string | number, data: Partial<Omit<Car, 'id' | 'created_at' | 'updated_at'>>) => Promise<{ success: boolean; error?: string }>;
-  deleteCar: (id: string | number) => Promise<{ success: boolean; error?: string }>;
+  updateCar: (id: number, data: Partial<Omit<Car, 'id' | 'created_at' | 'updated_at'>>) => Promise<{ success: boolean; error?: string }>;
+  deleteCar: (id: number) => Promise<{ success: boolean; error?: string }>;
 }
 
 export function useBackendCars(): UseBackendCarsReturn {
@@ -106,23 +106,23 @@ export function useBackendCars(): UseBackendCarsReturn {
     try {
       const fd = new FormData();
       fd.append('name', data.name as string);
-      fd.append('price', String((data as any).priceNum ?? data.price ?? 0));
+      fd.append('price', String((data as any).price ?? 0));
       fd.append('make', (data as any).make ?? '');
-      fd.append('body_type', (data as any).bodyType ?? '');
+      fd.append('body_type', (data as any).body_type ?? '');
       fd.append('year', String((data as any).year ?? ''));
       fd.append('mileage', (data as any).mileage ?? '');
       fd.append('status', (data as any).status ?? 'available');
       fd.append('engine', (data as any).engine ?? '');
       fd.append('transmission', (data as any).transmission ?? '');
-      fd.append('fuel_type', (data as any).fuelType ?? '');
+      fd.append('fuel_type', (data as any).fuel_type ?? '');
       fd.append('color', (data as any).color ?? '');
       fd.append('seating', String((data as any).seating ?? ''));
       fd.append('description', (data as any).description ?? '');
       fd.append('features', Array.isArray((data as any).features) ? (data as any).features.join(',') : ((data as any).features || ''));
 
       // primary image can be a data URL or external URL; only upload if data URL
-      const primary = (data as any).image || '';
-      if (primary.startsWith('data:')) {
+      const primary = (data as any).primary_image || '';
+      if (typeof primary === 'string' && primary.startsWith('data:')) {
         fd.append('primary_image', base64ToFile(primary, 'primary.jpg'));
       }
 
@@ -152,13 +152,13 @@ export function useBackendCars(): UseBackendCarsReturn {
   }, []);
 
   // Update car
-  const updateCar = useCallback(async (id: string | number, data: Partial<Omit<Car, 'id' | 'created_at' | 'updated_at'>>) => {
+  const updateCar = useCallback(async (id: number, data: Partial<Omit<Car, 'id' | 'created_at' | 'updated_at'>>) => {
     setError(null);
     try {
       const fd = new FormData();
       fd.append('id', String(id));
       Object.entries(data).forEach(([k, v]) => {
-        if (k === 'image' && typeof v === 'string' && v.startsWith('data:')) {
+        if (k === 'primary_image' && typeof v === 'string' && v.startsWith('data:')) {
           fd.append('primary_image', base64ToFile(v, 'primary.jpg'));
         } else if (k === 'images' && Array.isArray(v)) {
           (v as any[]).forEach((img, idx) => {
@@ -188,7 +188,7 @@ export function useBackendCars(): UseBackendCarsReturn {
   }, []);
 
   // Delete car
-  const deleteCar = useCallback(async (id: string | number) => {
+  const deleteCar = useCallback(async (id: number) => {
     setError(null);
     try {
       const fd = new FormData();

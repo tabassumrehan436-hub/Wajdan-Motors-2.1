@@ -42,12 +42,11 @@ export default function AdminSettings() {
   };
 
   const handleReset = () => {
-    if (confirm("This will reset all cars and inquiries data. Are you sure?")) {
-      localStorage.removeItem("wajdan_motors_cars");
-      localStorage.removeItem("wajdan_motors_inquiries");
-      toast({ title: "Data Reset", description: "All data has been reset to defaults." });
-      window.location.reload();
-    }
+    if (!confirm("This will reset local demo inquiries. Cars are now database-driven and will not be reset here. Continue?")) return;
+    // only clear inquiries (cars are managed by the backend)
+    localStorage.removeItem("wajdan_motors_inquiries");
+    toast({ title: "Demo Data Reset", description: "Local demo inquiries cleared. Cars remain in the database." });
+    window.location.reload();
   };
 
   return (

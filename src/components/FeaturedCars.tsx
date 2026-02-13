@@ -1,53 +1,17 @@
- import { useState, useEffect, useCallback } from "react";
- import { EmblaCarouselType } from "embla-carousel";
- import useEmblaCarousel from "embla-carousel-react";
- import { motion } from "framer-motion";
- import { ChevronLeft, ChevronRight, Fuel, Gauge, Settings2 } from "lucide-react";
- import { Button } from "@/components/ui/button";
- import { Link } from "react-router-dom";
- 
- import invFortuner from "@/assets/inv-fortuner.png";
- import invCivic from "@/assets/inv-civic.png";
- import invHaval from "@/assets/inv-haval.png";
- 
- const featuredCars = [
-   {
-     id: 1,
-     name: "Toyota Land Cruiser",
-     year: "2024",
-     price: "PKR 85,000,000",
-     image: invFortuner,
-     specs: { fuel: "Petrol", transmission: "Automatic", power: "415 HP" },
-     tag: "Premium SUV",
-   },
-   {
-     id: 2,
-     name: "Honda Civic RS",
-     year: "2024",
-     price: "PKR 12,500,000",
-     image: invCivic,
-     specs: { fuel: "Petrol", transmission: "CVT", power: "180 HP" },
-     tag: "Best Seller",
-   },
-   {
-     id: 3,
-     name: "Haval H6 HEV",
-     year: "2024",
-     price: "PKR 14,900,000",
-     image: invHaval,
-     specs: { fuel: "Hybrid", transmission: "Automatic", power: "243 HP" },
-     tag: "Eco Friendly",
-   },
-   {
-     id: 4,
-     name: "Toyota Fortuner",
-     year: "2024",
-     price: "PKR 18,500,000",
-     image: invFortuner,
-     specs: { fuel: "Diesel", transmission: "Automatic", power: "204 HP" },
-     tag: "Family SUV",
-   },
- ];
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { EmblaCarouselType } from "embla-carousel";
+import useEmblaCarousel from "embla-carousel-react";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Fuel, Gauge, Settings2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { useBackendCars } from "@/hooks/useBackendCars";
+
+// Featured slider: database-driven — shows only `status === 'available'` and limits to 6
+function formatPrice(num?: number | null) {
+  if (!num && num !== 0) return "Contact for price";
+  return `PKR ${Number(num).toLocaleString()}`;
+}
  
  export default function FeaturedCars() {
    const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -57,6 +21,12 @@
    });
    const [selectedIndex, setSelectedIndex] = useState(0);
    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+   const { cars, loading } = useBackendCars();
+
+   // only available cars, latest first, limit 6
+   const carsToShow = useMemo(() => {
+     return (cars || []).filter((c) => c.status === 'available').slice(0, 6);
+   }, [cars]);
  
    const scrollPrev = useCallback(() => {
      if (emblaApi) emblaApi.scrollPrev();
@@ -151,87 +121,91 @@
            {/* Embla Carousel */}
            <div className="overflow-hidden mx-4 sm:mx-6 lg:mx-8 md:mx-12" ref={emblaRef}>
              <div className="flex gap-4 sm:gap-5 md:gap-6">
-               {featuredCars.map((car, index) => (
-                 <motion.div
-                   key={car.id}
-                   className="flex-[0_0_100%] sm:flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0"
-                 >
-                   <div className="group relative bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-sm rounded-lg sm:rounded-2xl border border-white/10 overflow-hidden hover:border-primary/50 transition-all duration-500">
-                     {/* Tag Badge */}
-                     <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-10">
-                       <span className="px-2 sm:px-3 py-1 bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full">
-                         {car.tag}
-                       </span>
-                     </div>
- 
-                     {/* Car Image */}
-                     <div className="relative h-auto sm:h-32 md:h-48 lg:h-56 overflow-hidden bg-gradient-to-b from-transparent to-black/20 p-3 sm:p-4 flex items-center justify-center">
-                       <img
-                         src={car.image}
-                         alt={car.name}
-                         className="w-full h-auto object-contain transform group-hover:scale-105 transition-transform duration-700"
-                       />
-                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                     </div>
- 
-                     {/* Content */}
-                     <div className="p-4 sm:p-6">
-                       <div className="flex items-start justify-between mb-3">
-                         <div>
-                           <p className="text-white/50 text-xs sm:text-sm">{car.year}</p>
-                           <h3 className="text-base sm:text-xl font-heading font-bold text-white group-hover:text-primary transition-colors">
-                             {car.name}
-                           </h3>
+               {carsToShow.length === 0 ? (
+                 <div className="w-full text-center py-12 text-white/60">No cars available</div>
+               ) : (
+                 carsToShow.map((car, index) => (
+                   <motion.div
+                     key={car.id}
+                     className="flex-[0_0_100%] sm:flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0"
+                   >
+                     <div className="group relative bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-sm rounded-lg sm:rounded-2xl border border-white/10 overflow-hidden hover:border-primary/50 transition-all duration-500">
+                       {/* Tag Badge */}
+                       <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-10">
+                         <span className="px-2 sm:px-3 py-1 bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full">
+                           {String(car.year ?? "")}
+                         </span>
+                       </div>
+   
+                       {/* Car Image */}
+                       <div className="relative h-auto sm:h-32 md:h-48 lg:h-56 overflow-hidden bg-gradient-to-b from-transparent to-black/20 p-3 sm:p-4 flex items-center justify-center">
+                         <img
+                           src={car.primary_image || car.images?.[0] || "/uploads/placeholder.png"}
+                           alt={car.name}
+                           className="w-full h-auto object-contain transform group-hover:scale-105 transition-transform duration-700"
+                         />
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                       </div>
+   
+                       {/* Content */}
+                       <div className="p-4 sm:p-6">
+                         <div className="flex items-start justify-between mb-3">
+                           <div>
+                             <p className="text-white/50 text-xs sm:text-sm">{car.year}</p>
+                             <h3 className="text-base sm:text-xl font-heading font-bold text-white group-hover:text-primary transition-colors">
+                               {car.name}
+                             </h3>
+                           </div>
+                         </div>
+   
+                         {/* Specs */}
+                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4 text-white/60 text-xs sm:text-sm">
+                           <span className="flex items-center gap-1">
+                             <Fuel className="w-3 h-3 sm:w-4 sm:h-4" />
+                             {car.fuel_type || "—"}
+                           </span>
+                           <span className="flex items-center gap-1">
+                             <Settings2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                             {car.transmission || "—"}
+                           </span>
+                           <span className="flex items-center gap-1">
+                             <Gauge className="w-3 h-3 sm:w-4 sm:h-4" />
+                             {car.engine || "—"}
+                           </span>
+                         </div>
+   
+                         {/* Price & CTA */}
+                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-4 border-t border-white/10">
+                           <div>
+                             <p className="text-[10px] sm:text-xs text-white/40 uppercase">Price</p>
+                             <p className="text-base sm:text-lg font-heading font-bold text-primary">
+                               {formatPrice(car.price)}
+                             </p>
+                           </div>
+                           <Button
+                             asChild
+                             size="sm"
+                             className="w-full sm:w-auto bg-white/10 hover:bg-primary text-white border border-white/20 hover:border-primary transition-all text-xs sm:text-sm"
+                           >
+                             <Link to={`/car/${car.id}`}>View Details</Link>
+                           </Button>
                          </div>
                        </div>
- 
-                       {/* Specs */}
-                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4 text-white/60 text-xs sm:text-sm">
-                         <span className="flex items-center gap-1">
-                           <Fuel className="w-3 h-3 sm:w-4 sm:h-4" />
-                           {car.specs.fuel}
-                         </span>
-                         <span className="flex items-center gap-1">
-                           <Settings2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                           {car.specs.transmission}
-                         </span>
-                         <span className="flex items-center gap-1">
-                           <Gauge className="w-3 h-3 sm:w-4 sm:h-4" />
-                           {car.specs.power}
-                         </span>
-                       </div>
- 
-                       {/* Price & CTA */}
-                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-4 border-t border-white/10">
-                         <div>
-                           <p className="text-[10px] sm:text-xs text-white/40 uppercase">Price</p>
-                           <p className="text-base sm:text-lg font-heading font-bold text-primary">
-                             {car.price}
-                           </p>
-                         </div>
-                         <Button
-                           asChild
-                           size="sm"
-                           className="w-full sm:w-auto bg-white/10 hover:bg-primary text-white border border-white/20 hover:border-primary transition-all text-xs sm:text-sm"
-                         >
-                           <Link to={`/car/${car.id}`}>View Details</Link>
-                         </Button>
+   
+                       {/* Hover Glow */}
+                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 to-transparent" />
                        </div>
                      </div>
- 
-                     {/* Hover Glow */}
-                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 to-transparent" />
-                     </div>
-                   </div>
-                 </motion.div>
-               ))}
+                   </motion.div>
+                 ))
+               )}
              </div>
            </div>
  
            {/* Navigation Dots */}
            <div className="flex justify-center gap-2 mt-6 sm:mt-8">
-             {featuredCars.map((_, index) => (
+             {carsToShow.map((_, index) => (
                <button
                  key={index}
                  onClick={() => scrollTo(index)}

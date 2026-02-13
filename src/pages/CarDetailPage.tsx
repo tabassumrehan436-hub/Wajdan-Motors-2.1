@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -8,15 +8,36 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Share2, Phone, MessageCircle, ChevronLeft, ChevronRight, Fuel, Gauge, Calendar, Settings, Car, Shield, MapPin } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { getCars } from "@/lib/carsData";
+import { useBackendCars, type Car as BackendCar } from "@/hooks/useBackendCars";
 
 export default function CarDetailPage() {
   const { id } = useParams();
-  const allCars = getCars();
-  const car = allCars.find(c => c.id === id);
+  const { cars } = useBackendCars();
+  const [car, setCar] = useState<BackendCar | null>(null);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  useEffect(() => {
+    // prefer server single-car endpoint
+    const load = async () => {
+      if (!id) return;
+      try {
+        const res = await fetch(`/api/get-car.php?id=${encodeURIComponent(id)}`);
+        if (!res.ok) throw new Error('Not found');
+        const body = await res.json();
+        if (body && body.data) {
+          setCar(body.data);
+          return;
+        }
+      } catch (err) {
+        // fallback to car list (shouldn't be necessary)
+        const found = (cars || []).find((c) => c.id === Number(id));
+        if (found) setCar(found);
+      }
+    };
+
+    load();
+  }, [id, cars]);
   // Contact number (country code + number without +)
   const PHONE_NUMBER = "923247718001";
 
@@ -33,8 +54,8 @@ export default function CarDetailPage() {
   // Provide safe defaults for optional fields
   const safecar = car ? {
     ...car,
-    seating: car.seating || "5 Seater",
-    features: car.features || ["Standard Features", "Professional Maintenance", "Quality Assured"],
+    seating: car.seating ?? 5,
+    features: Array.isArray(car.features) ? car.features : (car.features ? String(car.features).split(',') : []),
     description: car.description || "Premium quality vehicle with excellent condition and maintenance history."
   } : null;
 
@@ -61,16 +82,16 @@ export default function CarDetailPage() {
       addToWishlist({
         id: safecar.id,
         name: safecar.name,
-        price: safecar.price,
-        image: safecar.image,
-        year: safecar.year,
-        mileage: safecar.mileage,
+        price: String(safecar.price ?? ''),
+        primary_image: safecar.primary_image || safecar.images?.[0] || '/uploads/placeholder.png',
+        year: String(safecar.year ?? ''),
+        mileage: String(safecar.mileage ?? ''),
       });
     }
   };
 
-  // Use actual images array if available, otherwise fallback to single image
-  const images = (safecar.images && safecar.images.length > 0) ? safecar.images : [safecar.image];
+  // Use actual images array if available, otherwise fallback to primary_image
+  const images = (safecar.images && safecar.images.length > 0) ? safecar.images : [safecar.primary_image || '/uploads/placeholder.png'];
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -165,7 +186,7 @@ export default function CarDetailPage() {
                   <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-black text-foreground mb-1 sm:mb-2">
                     {safecar.name}
                   </h1>
-                  <p className="text-muted-foreground text-xs sm:text-sm md:text-base">{safecar.specs}</p>
+                  <p className="text-muted-foreground text-xs sm:text-sm md:text-base">{safecar.description}</p>
                 </div>
                 <div className="flex gap-1 sm:gap-2">
                   <motion.button
@@ -211,7 +232,7 @@ export default function CarDetailPage() {
               {[
                 { icon: Calendar, label: "Year", value: safecar.year },
                 { icon: Gauge, label: "Mileage", value: safecar.mileage },
-                { icon: Fuel, label: "Fuel", value: safecar.fuelType },
+                { icon: Fuel, label: "Fuel", value: safecar.fuel_type },
                 { icon: Settings, label: "Trans.", value: safecar.transmission },
               ].map((item, idx) => (
                 <motion.div
@@ -239,7 +260,7 @@ export default function CarDetailPage() {
                 <Car className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
                 <div>
                   <p className="text-[10px] sm:text-xs text-muted-foreground">Body Type</p>
-                  <p className="font-semibold text-xs sm:text-sm">{safecar.bodyType}</p>
+                  <p className="font-semibold text-xs sm:text-sm">{safecar.body_type}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 sm:gap-3">

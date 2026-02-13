@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Car } from "@/lib/carsData";
+import { Car } from "@/hooks/useBackendCars";
 import { X, Upload, Trash2 } from "lucide-react";
 
 interface CarFormProps {
@@ -31,21 +31,21 @@ const PAKISTAN_CAR_BRANDS = [
 export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
   const [formData, setFormData] = useState({
     name: car?.name || "",
-    priceNum: car?.priceNum || 0,
-    year: car?.year || new Date().getFullYear().toString(),
-    mileage: car?.mileage || "",
-    make: car?.make || "",
-    bodyType: car?.bodyType || "",
+    price: Number(car?.price ?? 0),
+    year: car?.year ? String(car.year) : String(new Date().getFullYear()),
+    mileage: car?.mileage ? String(car.mileage) : "",
+    make: (car?.make as string) || "",
+    body_type: (car?.body_type as string) || "",
     status: car?.status || "available",
     engine: car?.engine || "",
     transmission: car?.transmission || "Automatic",
-    fuelType: car?.fuelType || "Petrol",
+    fuel_type: (car?.fuel_type as string) || "Petrol",
     color: car?.color || "",
-    image: car?.image || "",
+    primary_image: car?.primary_image || "",
     images: car?.images || [],
     description: car?.description || "",
-    seating: car?.seating || "5 Seater",
-    features: car?.features?.join(", ") || "",
+    seating: car?.seating ? String(car.seating) : "5",
+    features: Array.isArray(car?.features) ? (car!.features as any).join(", ") : (car?.features || ""),
   });
 
   const [dragActive, setDragActive] = useState(false);
@@ -54,33 +54,31 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const priceFormatted = `PKR ${(formData.priceNum / 1000000).toFixed(1)}M`;
+    const priceFormatted = `PKR ${(Number(formData.price) / 1000000).toFixed(1)}M`;
     const featuresList = formData.features
       .split(",")
       .map((f) => f.trim())
       .filter((f) => f.length > 0);
     
+    // map to backend-friendly shape (use snake_case keys only)
     onSubmit({
       name: formData.name,
-      price: priceFormatted,
-      priceNum: formData.priceNum,
-      specs: `${formData.mileage} • ${formData.transmission}`,
-      year: formData.year,
-      mileage: formData.mileage,
-      image: formData.image || formData.images[0] || "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=500",
-      images: formData.images.length > 0 ? formData.images : undefined,
-      tag: formData.year,
+      price: Number(formData.price),
       make: formData.make,
-      bodyType: formData.bodyType,
+      body_type: formData.body_type,
+      year: Number(formData.year) || null,
+      mileage: Number(String(formData.mileage).replace(/\D/g, '')) || 0,
       status: formData.status === "sold" ? "sold" : "available",
       engine: formData.engine,
       transmission: formData.transmission,
-      fuelType: formData.fuelType,
+      fuel_type: formData.fuel_type,
       color: formData.color,
+      seating: Number(formData.seating) || null,
       description: formData.description,
-      seating: formData.seating,
-      features: featuresList.length > 0 ? featuresList : ["Standard Features", "Professional Maintenance"],
-    });
+      features: featuresList,
+      primary_image: formData.primary_image || formData.images[0] || "",
+      images: formData.images.length > 0 ? formData.images : undefined,
+    } as any);
   };
 
   // Handle file input change
@@ -181,8 +179,8 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
             <div>
               <Label>Body Type *</Label>
               <Select
-                value={formData.bodyType}
-                onValueChange={(v) => setFormData({ ...formData, bodyType: v })}
+                value={formData.body_type}
+                onValueChange={(v) => setFormData({ ...formData, body_type: v })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select type" />
@@ -213,8 +211,8 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
               <Label>Price (PKR) *</Label>
               <Input
                 type="number"
-                value={formData.priceNum}
-                onChange={(e) => setFormData({ ...formData, priceNum: Number(e.target.value) })}
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
                 placeholder="10000000"
                 required
               />
@@ -280,8 +278,8 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
             <div>
               <Label>Fuel Type</Label>
               <Select
-                value={formData.fuelType}
-                onValueChange={(v) => setFormData({ ...formData, fuelType: v })}
+                value={formData.fuel_type}
+                onValueChange={(v) => setFormData({ ...formData, fuel_type: v })}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -317,13 +315,13 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="2 Seater">2 Seater</SelectItem>
-                  <SelectItem value="4 Seater">4 Seater</SelectItem>
-                  <SelectItem value="5 Seater">5 Seater</SelectItem>
-                  <SelectItem value="6 Seater">6 Seater</SelectItem>
-                  <SelectItem value="7 Seater">7 Seater</SelectItem>
-                  <SelectItem value="8 Seater">8 Seater</SelectItem>
-                  <SelectItem value="9 Seater">9 Seater</SelectItem>
+                  <SelectItem value="2">2 Seater</SelectItem>
+                  <SelectItem value="4">4 Seater</SelectItem>
+                  <SelectItem value="5">5 Seater</SelectItem>
+                  <SelectItem value="6">6 Seater</SelectItem>
+                  <SelectItem value="7">7 Seater</SelectItem>
+                  <SelectItem value="8">8 Seater</SelectItem>
+                  <SelectItem value="9">9 Seater</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -332,8 +330,8 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
             <div className="md:col-span-2">
               <Label>Primary Image URL</Label>
               <Input
-                value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                value={formData.primary_image}
+                onChange={(e) => setFormData({ ...formData, primary_image: e.target.value })}
                 placeholder="https://example.com/car-image.jpg"
               />
               <p className="text-xs text-muted-foreground mt-1">

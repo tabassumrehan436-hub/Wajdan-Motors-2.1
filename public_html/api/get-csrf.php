@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config.php';
 // get-csrf.php - returns a CSRF token for pre-login forms
 // Starts a session and returns token stored in session (useful for login)
 

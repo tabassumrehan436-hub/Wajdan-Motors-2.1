@@ -59,7 +59,7 @@ export default function AdminDashboard() {
                   recentCars.map((car) => (
                     <div key={car.id} className="flex items-center gap-3 p-3 bg-secondary/30 rounded-xl">
                       <img
-                        src={car.image}
+                        src={car.primary_image || car.images?.[0] || '/uploads/placeholder.png'}
                         alt={car.name}
                         className="w-12 h-12 rounded-lg object-cover"
                       />

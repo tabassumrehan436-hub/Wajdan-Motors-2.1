@@ -1,10 +1,10 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface WishlistItem {
-  id: string;
+  id: number;
   name: string;
   price: string;
-  image: string;
+  primary_image: string; // use primary_image (no legacy `image`)
   year: string;
   mileage: string;
 }
@@ -12,8 +12,8 @@ interface WishlistItem {
 interface WishlistContextType {
   wishlist: WishlistItem[];
   addToWishlist: (item: WishlistItem) => void;
-  removeFromWishlist: (id: string) => void;
-  isInWishlist: (id: string) => boolean;
+  removeFromWishlist: (id: number) => void;
+  isInWishlist: (id: number) => boolean;
   wishlistCount: number;
 }
 

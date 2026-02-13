@@ -18,8 +18,12 @@ if (!$name || $price === null) {
 $make = isset($_POST['make']) ? cleanString($_POST['make']) : null;
 $body_type = isset($_POST['body_type']) ? cleanString($_POST['body_type']) : null;
 $year = isset($_POST['year']) ? (is_numeric($_POST['year']) ? (int)$_POST['year'] : null) : null;
-$mileage = isset($_POST['mileage']) ? cleanString($_POST['mileage']) : null;
-$status = isset($_POST['status']) ? cleanString($_POST['status']) : null;
+$mileage = isset($_POST['mileage']) ? (is_numeric($_POST['mileage']) ? (int)$_POST['mileage'] : 0) : 0;
+$status = isset($_POST['status']) ? strtolower(cleanString($_POST['status'])) : 'available';
+// Validate status against allowed values
+if (!in_array($status, ['available', 'sold'], true)) {
+    $status = 'available';
+}
 $engine = isset($_POST['engine']) ? cleanString($_POST['engine']) : null;
 $transmission = isset($_POST['transmission']) ? cleanString($_POST['transmission']) : null;
 $fuel_type = isset($_POST['fuel_type']) ? cleanString($_POST['fuel_type']) : null;
