@@ -1,0 +1,68 @@
+-- car_dealer_db.sql
+-- Creates database and tables for Car Dealer Admin Panel (UTF8MB4)
+
+CREATE DATABASE IF NOT EXISTS `car_dealer_db`
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE `car_dealer_db`;
+
+-- -----------------------------------------------------
+-- Table structure for `cars`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cars` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `make` VARCHAR(100),
+  `body_type` VARCHAR(100),
+  `year` INT,
+  `price` BIGINT,
+  `mileage` VARCHAR(50),
+  `status` VARCHAR(50),
+  `engine` VARCHAR(100),
+  `transmission` VARCHAR(100),
+  `fuel_type` VARCHAR(100),
+  `color` VARCHAR(100),
+  `seating` INT,
+  `primary_image` VARCHAR(255),
+  `description` TEXT,
+  `features` TEXT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_make` (`make`),
+  KEY `idx_year` (`year`),
+  KEY `idx_price` (`price`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------
+-- Table structure for `car_images`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `car_images` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `car_id` INT NOT NULL,
+  `image_path` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_car_id` (`car_id`),
+  CONSTRAINT `fk_car_images_car` FOREIGN KEY (`car_id`) REFERENCES `cars`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------
+-- Table structure for `settings`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `business_name` VARCHAR(255),
+  `phone` VARCHAR(50),
+  `email` VARCHAR(255),
+  `whatsapp` VARCHAR(50),
+  `address` TEXT,
+  `working_hours` VARCHAR(255),
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Seed an empty settings row (optional)
+INSERT INTO `settings` (`id`) VALUES (1) ON DUPLICATE KEY UPDATE `id` = `id`;
