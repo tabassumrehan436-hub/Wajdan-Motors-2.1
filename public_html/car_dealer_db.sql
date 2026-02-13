@@ -8,27 +8,27 @@ CREATE DATABASE IF NOT EXISTS `car_dealer_db`
 USE `car_dealer_db`;
 
 -- -----------------------------------------------------
--- Table structure for `cars`
+-- Table structure for `cars` (production-ready)
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cars` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `make` VARCHAR(100),
   `body_type` VARCHAR(100),
-  `year` INT,
-  `price` BIGINT,
-  `mileage` VARCHAR(50),
-  `status` VARCHAR(50),
+  `year` INT DEFAULT NULL,
+  `price` BIGINT NOT NULL DEFAULT 0,
+  `mileage` INT NOT NULL DEFAULT 0,
+  `status` ENUM('available','sold') NOT NULL DEFAULT 'available',
   `engine` VARCHAR(100),
   `transmission` VARCHAR(100),
   `fuel_type` VARCHAR(100),
   `color` VARCHAR(100),
-  `seating` INT,
+  `seating` INT DEFAULT NULL,
   `primary_image` VARCHAR(255),
   `description` TEXT,
   `features` TEXT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_make` (`make`),
   KEY `idx_year` (`year`),
@@ -75,11 +75,15 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(100) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1,
+  `last_login` TIMESTAMP NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insert default admin user (username: admin / password: admin123)
-INSERT INTO `admin_users` (`username`, `password`) VALUES
-('admin', '$2y$10$qjZpWcNljO6kabsKWVbLn.6M7.eS/ZZc8UJCze4laTETO6bvHM.ai')
-ON DUPLICATE KEY UPDATE `username` = `username`;
+-- IMPORTANT: No weak default admin is seeded. Create an admin user via a secure
+-- migration or the application admin UI. If you must insert a user via SQL,
+-- generate a strong password and store the hash (use PHP's password_hash()).
+-- Example (replace <HASHED_PASSWORD> with password_hash('YourStrongP@ss', PASSWORD_DEFAULT)):
+-- INSERT INTO admin_users (username, password, is_active) VALUES ('admin', '<HASHED_PASSWORD>', 1);
+
