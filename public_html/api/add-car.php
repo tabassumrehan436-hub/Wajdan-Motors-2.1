@@ -7,24 +7,24 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(['error' => 'Method not allowed'], 405);
 }
 
-// Basic validation
+// Basic validation + sanitization
 $name = isset($_POST['name']) ? cleanString($_POST['name']) : null;
-$price = isset($_POST['price']) ? (int)$_POST['price'] : null;
+$price = isset($_POST['price']) ? (is_numeric($_POST['price']) ? (int)$_POST['price'] : null) : null;
 
-if (!$name || !$price) {
-    respond(['error' => 'Missing required fields: name and price'], 422);
+if (!$name || $price === null) {
+    respond(['error' => 'Missing or invalid required fields: name and price'], 422);
 }
 
 $make = isset($_POST['make']) ? cleanString($_POST['make']) : null;
 $body_type = isset($_POST['body_type']) ? cleanString($_POST['body_type']) : null;
-$year = isset($_POST['year']) ? cleanInt($_POST['year']) : null;
+$year = isset($_POST['year']) ? (is_numeric($_POST['year']) ? (int)$_POST['year'] : null) : null;
 $mileage = isset($_POST['mileage']) ? cleanString($_POST['mileage']) : null;
 $status = isset($_POST['status']) ? cleanString($_POST['status']) : null;
 $engine = isset($_POST['engine']) ? cleanString($_POST['engine']) : null;
 $transmission = isset($_POST['transmission']) ? cleanString($_POST['transmission']) : null;
 $fuel_type = isset($_POST['fuel_type']) ? cleanString($_POST['fuel_type']) : null;
 $color = isset($_POST['color']) ? cleanString($_POST['color']) : null;
-$seating = isset($_POST['seating']) ? cleanInt($_POST['seating']) : null;
+$seating = isset($_POST['seating']) ? (is_numeric($_POST['seating']) ? (int)$_POST['seating'] : null) : null;
 $description = isset($_POST['description']) ? trim($_POST['description']) : null;
 $features = isset($_POST['features']) ? trim($_POST['features']) : null;
 

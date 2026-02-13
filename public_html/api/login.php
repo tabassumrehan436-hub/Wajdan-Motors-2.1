@@ -19,6 +19,25 @@ if ($lockUntil && time() < $lockUntil) {
     respond(['success' => false, 'message' => 'Too many attempts. Try later.'], 429);
 }
 
+// Require a CSRF token fetched from /api/get-csrf.php for pre-login protection
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => $secure,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    session_start();
+}
+$sessionToken = $_SESSION['csrf_token'] ?? null;
+$sentToken = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+if (!$sessionToken || !$sentToken || !hash_equals($sessionToken, (string)$sentToken)) {
+    respond(['success' => false, 'message' => 'Invalid CSRF token'], 403);
+}
+
 try {
     $stmt = $pdo->prepare('SELECT id, password FROM admin_users WHERE username = :username LIMIT 1');
     $stmt->execute([':username' => $username]);
@@ -32,20 +51,6 @@ try {
             $_SESSION['login_lock_until'] = time() + (15 * 60);
         }
         respond(['success' => false, 'message' => 'Invalid username or password'], 401);
-    }
-
-    // Secure session handling
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
-        session_set_cookie_params([
-            'lifetime' => 0,
-            'path' => '/',
-            'domain' => '',
-            'secure' => $secure,
-            'httponly' => true,
-            'samesite' => 'Lax',
-        ]);
-        session_start();
     }
 
     // Regenerate session id after successful login

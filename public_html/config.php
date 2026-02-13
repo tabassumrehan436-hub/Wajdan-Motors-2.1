@@ -92,7 +92,8 @@ function uploadImage(array $file)
     chmod($destination, 0644);
 
     // Return relative path including subdir
-    return UPLOAD_PATH_PREFIX . $subdir . $newName; // store relative path in DB
+    // Return path with leading slash for consistency (e.g. /uploads/2026/02/file.jpg)
+    return '/' . UPLOAD_PATH_PREFIX . $subdir . $newName; // store relative path in DB
 }
 
 function deleteImageFile(?string $relativePath): void
@@ -101,7 +102,10 @@ function deleteImageFile(?string $relativePath): void
 
     // Accept relative paths like 'uploads/YYYY/MM/file.ext' or just filename
     $rel = $relativePath;
-    if (strpos($rel, UPLOAD_PATH_PREFIX) === 0) {
+    // Normalize: allow paths with or without leading slash
+    if (strpos($rel, '/' . UPLOAD_PATH_PREFIX) === 0) {
+        $rel = substr($rel, strlen('/' . UPLOAD_PATH_PREFIX));
+    } elseif (strpos($rel, UPLOAD_PATH_PREFIX) === 0) {
         $rel = substr($rel, strlen(UPLOAD_PATH_PREFIX));
     }
 

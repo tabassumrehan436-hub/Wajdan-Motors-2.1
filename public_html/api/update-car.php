@@ -16,8 +16,15 @@ $params = [':id' => $id];
 $updatable = ['name','make','body_type','year','price','mileage','status','engine','transmission','fuel_type','color','seating','description','features'];
 foreach ($updatable as $f) {
     if (isset($_POST[$f])) {
+        // Validate numeric fields
+        if (in_array($f, ['year','price','seating'])) {
+            $val = $_POST[$f];
+            if (!is_numeric($val)) continue; // ignore invalid numeric updates
+            $params[":$f"] = (int)$val;
+        } else {
+            $params[":$f"] = cleanString($_POST[$f]);
+        }
         $fields[] = "`$f` = :$f";
-        $params[":$f"] = in_array($f, ['year','price','seating']) ? cleanInt($_POST[$f]) : cleanString($_POST[$f]);
     }
 }
 
