@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `cars` (
   KEY `idx_make` (`make`),
   KEY `idx_year` (`year`),
   KEY `idx_price` (`price`),
-  KEY `idx_status` (`status`)
+  KEY `idx_status` (`status`),
+  KEY `idx_created_at` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------

@@ -14,7 +14,8 @@ $DB_PORT = getenv('DB_PORT') ?: '3306';
 // Upload directory (relative path stored in DB)
 define('UPLOAD_DIR', __DIR__ . '/uploads/');
 define('UPLOAD_PATH_PREFIX', 'uploads/');
-define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5MB
+// Increased to 15MB per image for VPS
+define('MAX_FILE_SIZE', 15 * 1024 * 1024); // 15MB
 $ALLOWED_TYPES = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
 
 // ---- Global JSON responder ----
@@ -71,9 +72,17 @@ function uploadImage(array $file)
     }
 
     $ext = $ALLOWED_TYPES[$mime];
-    $newName = uniqid('', true) . '.' . $ext;
 
-    $destination = UPLOAD_DIR . $newName;
+    // Use YYYY/MM directories for scalability
+    $subdir = date('Y') . '/' . date('m') . '/';
+    $dir = UPLOAD_DIR . $subdir;
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+
+    // uniqid + random suffix
+    $newName = uniqid('', true) . '-' . bin2hex(random_bytes(6)) . '.' . $ext;
+    $destination = $dir . $newName;
 
     if (!move_uploaded_file($file['tmp_name'], $destination)) {
         throw new RuntimeException('Failed to move uploaded file');
@@ -82,14 +91,24 @@ function uploadImage(array $file)
     // Set safe permissions
     chmod($destination, 0644);
 
-    return UPLOAD_PATH_PREFIX . $newName; // store relative path in DB
+    // Return relative path including subdir
+    return UPLOAD_PATH_PREFIX . $subdir . $newName; // store relative path in DB
 }
 
 function deleteImageFile(?string $relativePath): void
 {
     if (empty($relativePath)) return;
-    $filename = basename($relativePath);
-    $abs = UPLOAD_DIR . $filename;
+
+    // Accept relative paths like 'uploads/YYYY/MM/file.ext' or just filename
+    $rel = $relativePath;
+    if (strpos($rel, UPLOAD_PATH_PREFIX) === 0) {
+        $rel = substr($rel, strlen(UPLOAD_PATH_PREFIX));
+    }
+
+    // Prevent directory traversal
+    $rel = str_replace(['..', './', "\\"], '', $rel);
+    $abs = rtrim(UPLOAD_DIR, '/') . '/' . ltrim($rel, '/');
+
     if (is_file($abs)) {
         @unlink($abs);
     }
