@@ -1,10 +1,11 @@
 import { Car, DollarSign, Users, TrendingUp } from "lucide-react";
 import { useBackendCars } from "@/hooks/useBackendCars";
+import { useBackendInquiries } from "@/hooks/useBackendInquiries";
 import { motion } from "framer-motion";
 
 export default function DashboardStats() {
   const { cars = [] } = useBackendCars();
-  const inquiries = [];
+  const { inquiries = [] } = useBackendInquiries();
 
   const availableCars = (cars || []).filter((c) => c.status === "available").length;
   const soldCars = (cars || []).filter((c) => c.status === "sold").length;

@@ -199,10 +199,13 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
             <div>
               <Label>Year *</Label>
               <Input
+                type="number"
                 value={formData.year}
                 onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                 placeholder="2024"
                 required
+                min="1900"
+                max="2100"
               />
             </div>
 
@@ -222,10 +225,12 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
             <div>
               <Label>Mileage *</Label>
               <Input
+                type="number"
                 value={formData.mileage}
                 onChange={(e) => setFormData({ ...formData, mileage: e.target.value })}
-                placeholder="25,000 km"
+                placeholder="25000"
                 required
+                min="0"
               />
             </div>
 

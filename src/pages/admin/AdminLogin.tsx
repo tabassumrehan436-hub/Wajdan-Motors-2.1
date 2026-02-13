@@ -70,7 +70,7 @@ export default function AdminLogin() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
+                placeholder="username"
                 required
                 className="bg-white/10 border border-white/40 text-white placeholder:text-white/60 caret-white focus:border-white focus:bg-white/20"
                 disabled={loading}
@@ -89,7 +89,7 @@ export default function AdminLogin() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="password"
                   required
                   className="bg-white/10 border border-white/40 text-white placeholder:text-white/60 pr-10 caret-white focus:border-white focus:bg-white/20"
                   disabled={loading}
@@ -120,16 +120,15 @@ export default function AdminLogin() {
             </motion.div>
           </form>
 
-          {/* Demo Credentials */}
+          {/* Contact Admin */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
             className="mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/50"
           >
-            <p className="mb-2">Demo Credentials:</p>
-            <p>Username: <span className="text-white/70">admin</span></p>
-            <p>Password: <span className="text-white/70">admin123</span></p>
+            <p className="mb-2">Authorized access only</p>
+            <p>Contact administrator for credentials</p>
           </motion.div>
         </div>
 
