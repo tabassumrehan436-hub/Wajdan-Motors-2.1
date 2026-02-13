@@ -1,0 +1,598 @@
+/* ============================================================================
+   APP ROOT - GLOBAL LAYOUT MANAGEMENT
+   Fluid, adaptive container system for all screen sizes
+   ============================================================================ */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================================
+   RESPONSIVE PADDING SYSTEM
+   Scales fluidly from mobile to ultra-wide displays
+   ============================================================================ */
+
+/* Base: 320px - 480px (small mobile) */
+@media (max-width: 480px) {
+  #root {
+    padding: clamp(0.75rem, 2vw, 1rem);
+  }
+}
+
+/* Tablet: 481px - 768px (large mobile) */
+@media (min-width: 481px) and (max-width: 768px) {
+  #root {
+    padding: clamp(1rem, 3vw, 1.5rem);
+  }
+}
+
+/* Tablet: 769px - 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #root {
+    padding: clamp(1.5rem, 4vw, 2rem);
+  }
+}
+
+/* Desktop: 1025px - 1440px */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  #root {
+    padding: clamp(2rem, 5vw, 2.5rem);
+  }
+}
+
+/* Large Desktop: 1441px - 2560px */
+@media (min-width: 1441px) {
+  #root {
+    padding: clamp(2.5rem, 5vw, 4rem);
+    max-width: 2560px;
+  }
+}
+
+/* Ultra-wide: 2560px+ */
+@media (min-width: 2560px) {
+  #root {
+    padding: 4rem;
+    max-width: 3000px;
+  }
+}
+
+/* ============================================================================
+   CONTAINER MANAGEMENT
+   Prevent content stretching on ultra-wide screens
+   ============================================================================ */
+
+.main-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1440px) {
+  .main-container {
+    max-width: 1400px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .main-container {
+    max-width: 1800px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .main-container {
+    max-width: 2400px;
+  }
+}
+
+/* ============================================================================
+   HEADER & NAV SCROLL BEHAVIOR
+   Smooth transition from absolute to fixed positioning
+   ============================================================================ */
+
+nav[role="navigation"] {
+  will-change: transform, box-shadow, background-color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevent layout shift when switching from absolute to fixed */
+nav[role="navigation"].navbar-fixed {
+  /* Reserve space to prevent shift */
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth background transition during scroll */
+nav[role="navigation"] {
+  background: transparent;
+  transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-bottom-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================================
+   BUTTON SHINE EFFECT - ENHANCED
+   Premium interaction animation with performance optimization
+   ============================================================================ */
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* Enable hardware acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.btn-shine:active::before {
+  animation: ripple-effect 0.6s ease-out;
+}
+
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: skewX(-15deg);
+  pointer-events: none;
+  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-shine:hover::after {
+  left: 100%;
+}
+
+@keyframes ripple-effect {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
+   FOLDABLE DEVICE OPTIMIZATION
+   Samsung Galaxy Z Fold and Z Flip support
+   ============================================================================ */
+
+/* Detect fold state and adjust layout */
+@media (fold-bottom: 600px) {
+  /* Samsung Galaxy Z Fold (folded state: ~412px wide) */
+  .main-container {
+    width: 100%;
+  }
+
+  nav {
+    padding: 0.75rem;
+  }
+}
+
+@media (fold-right: 900px) {
+  /* Samsung Galaxy Z Fold (unfolded: ~900px wide) */
+  .main-container {
+    display: flex;
+    max-width: 100%;
+  }
+}
+
+/* Vertical hinge (landscape fold) */
+@supports (screen-spanning: single-fold-vertical) {
+  @media (horizontal-viewport-segments: 2) {
+    .main-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+  }
+}
+
+/* ============================================================================
+   SPLIT-SCREEN & MULTI-WINDOW SUPPORT
+   Responsive adaptation for partial viewport visibility
+   ============================================================================ */
+
+@media (max-width: 480px) and (max-height: 500px) {
+  /* Mobile device with limited height (keyboard open) */
+  #root {
+    padding: 0.5rem;
+  }
+
+  nav {
+    padding: 0.5rem;
+  }
+}
+
+@media (width: 50vw) {
+  /* Split-screen mode (50% of screen width) */
+  .main-container {
+    padding: 1rem;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE IMAGE OPTIMIZATION
+   Proper scaling across all device types
+   ============================================================================ */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  /* Prevent jerky animations during load */
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Hero images with proper aspect ratio */
+.hero-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card images with consistent scaling */
+.card-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================================
+   VIEWPORT HEIGHT CONSIDERATIONS
+   Adapt to limited vertical space
+   ============================================================================ */
+
+/* When viewport height is small (keyboard visible on mobile) */
+@supports (height: 100svh) {
+  body {
+    height: 100svh; /* Small viewport height */
+    overflow-y: auto;
+  }
+}
+
+@supports (height: 100lvh) {
+  html {
+    height: 100lvh; /* Large viewport height */
+  }
+}
+
+@supports (height: 100dvh) {
+  #root {
+    min-height: 100dvh; /* Dynamic viewport height */
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY OPTIMIZATIONS
+   Support for user preferences and assistive technologies
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  nav {
+    transition: none !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #root {
+    background-color: hsl(var(--background));
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  #root {
+    background-color: hsl(var(--background));
+  }
+}
+
+@media (prefers-contrast: more) {
+  body {
+    letter-spacing: 0.05em;
+  }
+
+  button {
+    border-width: 2px;
+  }
+}
+
+/* ============================================================================
+   PERFORMANCE OPTIMIZATION
+   Reduce layout thrashing and improve rendering
+   ============================================================================ */
+
+/* Prevent cumulative layout shift (CLS) */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Optimize rendering performance */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hardware acceleration for scrolling */
+#root {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================================
+   PRINT STYLES
+   Optimize layout for printing
+   ============================================================================ */
+
+@media print {
+  #root {
+    padding: 0;
+    background: white;
+  }
+
+  nav {
+    display: none;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE MAP CONTAINER
+   Professional responsive Google Maps embed for all screen sizes
+   ============================================================================ */
+
+/* Main container with max-width constraint and centering */
+.map-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Responsive padding scales with screen size */
+@media (min-width: 640px) {
+  .map-container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .map-container {
+    padding: 0 32px;
+  }
+}
+
+/* Map wrapper with aspect-ratio for perfect scaling */
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Mobile: 16:9 aspect ratio at 250px-280px height equivalent */
+@media (max-width: 480px) {
+  .map-wrapper {
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+  }
+}
+
+/* Small mobile to tablet: 16:9 at 280px-320px height equivalent */
+@media (min-width: 481px) and (max-width: 768px) {
+  .map-wrapper {
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+  }
+}
+
+/* Tablet: 16:9 at 320px-380px height equivalent */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .map-wrapper {
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+  }
+}
+
+/* Desktop: 16:9 at 380px-450px height equivalent */
+@media (min-width: 1025px) {
+  .map-wrapper {
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+  }
+}
+
+/* Ensuring iframe fills the container completely */
+.map-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Map caption styling */
+.map-caption {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .map-caption {
+    margin-top: 16px;
+    font-size: 1rem;
+  }
+}
+/* ============================================================================
+   SOCIAL MEDIA ICONS STYLING
+   Premium hover effects and accessibility improvements
+   ============================================================================ */
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  /* Enable GPU acceleration for smooth animations */
+  will-change: transform, color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth color transition on hover */
+.social-icon {
+  color: #ffffff;
+  transition: color 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover state: Red color with scale animation */
+.social-icon:hover {
+  color: #e10600;
+  transform: scale(1.1) translateZ(0);
+}
+
+/* Active/Focus state for accessibility */
+.social-icon:focus-visible {
+  outline: 2px solid #e10600;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Tablet and larger: More pronounced hover effects */
+@media (min-width: 768px) {
+  .social-icon:hover {
+    transform: scale(1.15) translateZ(0);
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .social-icon {
+    transition: color 0.1ms ease;
+  }
+
+  .social-icon:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================================
+   ENHANCED SOCIAL MEDIA ICONS WITH BACKGROUND CIRCLE
+   Premium design with glow and background effects
+   ============================================================================ */
+
+.social-icon-enhanced {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  /* Enable GPU acceleration */
+  will-change: transform, box-shadow, background-color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Base state: Subtle background */
+.social-icon-enhanced {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover state: Red background with glow */
+.social-icon-enhanced:hover {
+  color: #ffffff;
+  background-color: #e10600;
+  box-shadow: 0 0 30px rgba(225, 6, 0, 0.6), 0 0 60px rgba(225, 6, 0, 0.3);
+  transform: scale(1.1) translateZ(0);
+}
+
+/* Focus state for keyboard accessibility */
+.social-icon-enhanced:focus-visible {
+  outline: 2px solid #e10600;
+  outline-offset: 6px;
+}
+
+/* Tablet and larger: Enhanced hover scale */
+@media (min-width: 768px) {
+  .social-icon-enhanced:hover {
+    transform: scale(1.15) translateZ(0);
+    box-shadow: 0 0 35px rgba(225, 6, 0, 0.7), 0 0 70px rgba(225, 6, 0, 0.4);
+  }
+}
+
+/* Mobile: Optimized for touch */
+@media (max-width: 767px) {
+  .social-icon-enhanced {
+    padding: 8px;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .social-icon-enhanced {
+    transition: color 0.1ms ease, background-color 0.1ms ease;
+  }
+
+  .social-icon-enhanced:hover {
+    transform: none;
+  }
+}

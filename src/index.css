@@ -1,0 +1,619 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Wajdan Motors Design System - Premium Car Dealership */
+
+@layer base {
+  :root {
+    /* Light Theme - Clean Dealership Look */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary: Vibrant Red - #EC1B24 */
+    --primary: 357 85% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 220 14% 96%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 357 85% 52%;
+
+    --radius: 0.5rem;
+
+    /* Custom Colors */
+    --dark-surface: 220 20% 15%;
+    --dark-surface-foreground: 0 0% 100%;
+
+    /* Sidebar (keeping default) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 357 85% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 357 85% 52%;
+
+    --dark-surface: 220 20% 12%;
+    --dark-surface-foreground: 0 0% 100%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply bg-background;
+    /* Fluid font scaling: 14px mobile → 16px tablet → 18px desktop → 20px ultra-wide */
+    font-size: clamp(14px, 2.5vw, 20px);
+    /* Scrollbar gutter to prevent layout shift */
+    scrollbar-gutter: stable;
+    /* Smooth scrolling for header transition */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Lexend Deca', sans-serif;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    /* Prevent layout shift during scroll */
+    overflow-y: scroll;
+    /* Improve rendering performance */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    @apply uppercase tracking-wide;
+    /* Prevent text overflow */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* ========================================
+     RESPONSIVE TYPOGRAPHY SYSTEM
+     Mobile-first with fluid scaling
+     ======================================== */
+  
+  /* H1: Page titles and hero sections */
+  h1 {
+    /* 24px mobile → 56px desktop → 64px ultra-wide */
+    font-size: clamp(1.5rem, 6vw, 4rem);
+    line-height: 1.1;
+    font-weight: 900;
+  }
+
+  /* H2: Section headings */
+  h2 {
+    /* 20px mobile → 40px desktop → 48px ultra-wide */
+    font-size: clamp(1.25rem, 4.5vw, 3rem);
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  /* H3: Subsection headings */
+  h3 {
+    /* 16px mobile → 28px desktop → 32px ultra-wide */
+    font-size: clamp(1rem, 3.5vw, 2rem);
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  /* H4: Component headings */
+  h4 {
+    /* 14px mobile → 20px desktop → 24px ultra-wide */
+    font-size: clamp(0.875rem, 2.5vw, 1.5rem);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  /* H5: Label-style headings */
+  h5 {
+    /* 13px mobile → 18px desktop → 22px ultra-wide */
+    font-size: clamp(0.8125rem, 2vw, 1.375rem);
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  /* H6: Small headings */
+  h6 {
+    /* 12px mobile → 16px desktop → 20px ultra-wide */
+    font-size: clamp(0.75rem, 1.5vw, 1.25rem);
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  /* Body paragraphs with fluid scaling */
+  p {
+    /* 14px mobile → 16px tablet → 18px desktop → 20px ultra-wide */
+    font-size: clamp(0.875rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+  }
+
+  /* Small text elements */
+  small, .text-sm {
+    /* 12px mobile → 14px tablet → 16px desktop */
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
+    line-height: 1.5;
+  }
+
+  /* Fine print and labels */
+  .text-xs {
+    /* 11px mobile → 13px tablet → 14px desktop */
+    font-size: clamp(0.6875rem, 1vw, 0.875rem);
+    line-height: 1.4;
+  }
+
+  /* ========================================
+     MEDIA HANDLING
+     Responsive images and video embeds
+     ======================================== */
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    /* Prevent image distortion on zoom */
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  /* Responsive images in picture elements */
+  picture {
+    display: block;
+  }
+
+  /* Video and iframe embeds */
+  video, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* ========================================
+     FOLDABLE DEVICE SUPPORT
+     ======================================== */
+  
+  @media (fold-bottom: 600px) {
+    /* Samsung Galaxy Z Fold (folded: ~412px wide) */
+    html {
+      font-size: clamp(13px, 2vw, 14px);
+    }
+  }
+
+  @media (fold-right: 900px) {
+    /* Samsung Galaxy Z Fold (unfolded: ~900px wide) */
+    body {
+      display: flex;
+    }
+  }
+
+  @media (device-width: 360px) and (device-height: 800px) {
+    /* Standard mobile optimization */
+    body {
+      text-rendering: optimizeSpeed;
+    }
+  }
+
+  /* ========================================
+     SPLIT-SCREEN & MULTI-WINDOW SUPPORT
+     ======================================== */
+
+  @media (max-width: 480px) and (orientation: portrait) {
+    /* Standard portrait mobile */
+    html {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 767px) and (orientation: landscape) {
+    /* Mobile in landscape (keyboard visible on foldables) */
+    body {
+      padding-top: 1rem;
+    }
+  }
+
+  /* ========================================
+     ACCESSIBILITY & REDUCED MOTION
+     ======================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ========================================
+     HIGH CONTRAST MODE SUPPORT
+     ======================================== */
+
+  @media (prefers-contrast: more) {
+    body {
+      letter-spacing: 0.05em;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 900;
+    }
+  }
+}
+
+@layer utilities {
+  /* ========================================
+     RESPONSIVE SPACING UTILITIES
+     Fluid padding and margin scaling
+     ======================================== */
+
+  /* Responsive gap utilities */
+  .gap-fluid-sm {
+    gap: clamp(0.5rem, 1vw, 1rem);
+  }
+
+  .gap-fluid-md {
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .gap-fluid-lg {
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  .gap-fluid-xl {
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+
+  /* Responsive padding utilities */
+  .px-fluid-sm {
+    padding-left: clamp(1rem, 3vw, 1.5rem);
+    padding-right: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .px-fluid-md {
+    padding-left: clamp(1.5rem, 4vw, 2.5rem);
+    padding-right: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .px-fluid-lg {
+    padding-left: clamp(2rem, 5vw, 4rem);
+    padding-right: clamp(2rem, 5vw, 4rem);
+  }
+
+  .py-fluid-sm {
+    padding-top: clamp(1rem, 2vw, 1.5rem);
+    padding-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .py-fluid-md {
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .py-fluid-lg {
+    padding-top: clamp(2rem, 4vw, 4rem);
+    padding-bottom: clamp(2rem, 4vw, 4rem);
+  }
+
+  /* ========================================
+     RESPONSIVE WIDTH & HEIGHT
+     Fluid container sizing
+     ======================================== */
+
+  .w-fluid-max {
+    width: 100%;
+    max-width: clamp(90vw, 100%, 1440px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .w-fluid-content {
+    width: 100%;
+    max-width: clamp(90vw, 100%, 1280px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .w-fluid-ultra {
+    width: 100%;
+    max-width: clamp(90vw, 100%, 2560px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ========================================
+     HEADER SCROLL BEHAVIOR
+     Smooth position:absolute to fixed transition
+     ======================================== */
+
+  .navbar-scroll {
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navbar-scroll.scrolled {
+    @apply fixed top-0 left-0 right-0 z-50 bg-dark-surface shadow-lg;
+  }
+
+  .navbar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: transparent;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navbar-overlay.scrolled {
+    position: fixed;
+    background: hsl(var(--dark-surface));
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* ========================================
+     TEXT EFFECTS & GLOWS
+     Enhanced visual elements
+     ======================================== */
+
+  /* Text glow effect with scalable intensity */
+  .text-glow {
+    text-shadow: 0 0 20px hsl(357 85% 52% / 0.5);
+  }
+
+  .text-glow-sm {
+    text-shadow: 0 0 10px hsl(357 85% 52% / 0.4);
+  }
+
+  .text-glow-lg {
+    text-shadow: 0 0 30px hsl(357 85% 52% / 0.6);
+  }
+
+  /* ========================================
+     CARD ANIMATIONS & HOVER EFFECTS
+     Consistent interaction patterns
+     ======================================== */
+
+  /* Card hover animation */
+  .card-hover {
+    @apply transition-all duration-300 ease-out cursor-pointer;
+  }
+
+  .card-hover:hover {
+    @apply -translate-y-1;
+    box-shadow: 0 20px 40px -15px hsl(357 85% 52% / 0.15);
+  }
+
+  .card-hover:active {
+    @apply translate-y-0;
+    box-shadow: 0 10px 20px -10px hsl(357 85% 52% / 0.1);
+  }
+
+  /* ========================================
+     BUTTON SHINE EFFECT
+     Hover animation for CTA buttons
+     ======================================== */
+
+  .btn-shine {
+    @apply relative overflow-hidden;
+    isolation: isolate;
+  }
+
+  .btn-shine::after {
+    content: '';
+    @apply absolute top-0 -left-full w-full h-full pointer-events-none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transform: skewX(-15deg);
+    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-shine:hover::after {
+    left: 100%;
+  }
+
+  .btn-shine:active::after {
+    left: 200%;
+  }
+
+  /* ========================================
+     BACKGROUND UTILITIES
+     Gradient overlays and dark surfaces
+     ======================================== */
+
+  /* Dark surface background */
+  .bg-dark-surface {
+    background-color: hsl(var(--dark-surface));
+  }
+
+  .text-dark-surface-foreground {
+    color: hsl(var(--dark-surface-foreground));
+  }
+
+  /* Gradient overlays - responsive opacity */
+  .gradient-dark-left {
+    background: linear-gradient(to right, 
+      hsl(220 20% 15% / 1), 
+      hsl(220 20% 15% / 0.8), 
+      transparent);
+  }
+
+  .gradient-dark-bottom {
+    background: linear-gradient(to top, 
+      hsl(var(--background)), 
+      transparent);
+  }
+
+  .gradient-dark-top {
+    background: linear-gradient(to bottom, 
+      hsl(var(--background)), 
+      transparent);
+  }
+
+  /* ========================================
+     RESPONSIVE CONTAINER UTILITIES
+     Smart max-width constraints
+     ======================================== */
+
+  /* Prevent content stretching on ultra-wide screens */
+  .container-max-2xl {
+    width: 100%;
+    max-width: clamp(100%, calc(100vw - 2rem), 1536px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .container-max-3xl {
+    width: 100%;
+    max-width: clamp(100%, calc(100vw - 2rem), 1920px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .container-max-4xl {
+    width: 100%;
+    max-width: clamp(100%, calc(100vw - 2rem), 2560px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ========================================
+     VISIBILITY UTILITIES
+     Support for responsive display
+     ======================================== */
+
+  /* Hide on small screens only */
+  @media (max-width: 640px) {
+    .hide-mobile {
+      display: none !important;
+    }
+  }
+
+  /* Hide on large screens only */
+  @media (min-width: 1024px) {
+    .hide-desktop {
+      display: none !important;
+    }
+  }
+
+  /* ========================================
+     ASPECT RATIO UTILITIES
+     Keep consistent proportions at any size
+     ======================================== */
+
+  .aspect-video-fluid {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-square-fluid {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-portrait-fluid {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* ========================================
+     SCROLL & LAYOUT SHIFT PREVENTION
+     ======================================== */
+
+  /* Scrollbar gutter prevents CLS */
+  .prevent-layout-shift {
+    scrollbar-gutter: stable;
+  }
+
+  /* Content wrapper that prevents overflow */
+  .content-safe {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* ========================================
+     ULTRA-WIDE SCREEN OPTIMIZATIONS (2560px+)
+     ======================================== */
+
+  @media (min-width: 2560px) {
+    .text-ultra-wide {
+      font-size: clamp(1.5rem, 2vw, 2rem);
+    }
+
+    .gap-ultra-wide {
+      gap: clamp(3rem, 5vw, 5rem);
+    }
+
+    .px-ultra-wide {
+      padding-left: clamp(3rem, 6vw, 6rem);
+      padding-right: clamp(3rem, 6vw, 6rem);
+    }
+  }
+}
