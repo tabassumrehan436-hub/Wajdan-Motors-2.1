@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import useBackendOrders from '@/hooks/useBackendOrders';
 import { OrderWithDetails } from '@/hooks/useBackendOrders';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,16 +30,16 @@ export default function OrdersManager() {
   const [localError, setLocalError] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<OrderWithDetails | null>(null);
 
-  // Load orders on mount
-  useEffect(() => {
-    loadOrders();
-  }, [filterStatus]);
-
-  const loadOrders = async () => {
+  const loadOrders = useCallback(async () => {
     setLocalError(null);
     const data = await getAllOrders(filterStatus);
     setOrders(data);
-  };
+  }, [getAllOrders, filterStatus]);
+
+  // Load orders on mount and when filters change
+  useEffect(() => {
+    loadOrders();
+  }, [loadOrders]);
 
   const handleStatusChange = async (orderId: string, newStatus: 'pending' | 'approved' | 'rejected' | 'completed') => {
     setLocalError(null);
