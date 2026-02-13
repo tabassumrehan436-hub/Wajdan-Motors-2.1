@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/auth.php';
 
 // update-car.php - Update car and manage images
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

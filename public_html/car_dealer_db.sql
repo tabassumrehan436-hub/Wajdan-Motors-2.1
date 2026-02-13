@@ -66,3 +66,19 @@ CREATE TABLE IF NOT EXISTS `settings` (
 
 -- Seed an empty settings row (optional)
 INSERT INTO `settings` (`id`) VALUES (1) ON DUPLICATE KEY UPDATE `id` = `id`;
+
+-- -----------------------------------------------------
+-- Table structure for `admin_users` (site administrators)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `admin_users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(100) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Insert default admin user (username: admin / password: admin123)
+INSERT INTO `admin_users` (`username`, `password`) VALUES
+('admin', '$2y$10$qjZpWcNljO6kabsKWVbLn.6M7.eS/ZZc8UJCze4laTETO6bvHM.ai')
+ON DUPLICATE KEY UPDATE `username` = `username`;

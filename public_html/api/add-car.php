@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/auth.php';
 
 // add-car.php - Adds a car record and handles image uploads
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
