@@ -10,8 +10,13 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
-    // No backend proxy configured — app uses localStorage now.
-    middlewareMode: false,
+    // Proxy API requests to PHP backend
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+      },
+    },
   },
   plugins: [react()],
   resolve: {
