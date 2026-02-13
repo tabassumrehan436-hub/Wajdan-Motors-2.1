@@ -15,7 +15,8 @@ try {
     $stmtImgs->execute([':id' => $id]);
     $images = $stmtImgs->fetchAll();
 
-    $car['images'] = $images;
+    // Extract just the image paths (not the full objects)
+    $car['images'] = array_map(fn($img) => $img['image_path'], $images);
     respond($car);
 } catch (Exception $e) {
     respond(['error' => 'Fetch failed', 'details' => $e->getMessage()], 500);

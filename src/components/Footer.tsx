@@ -75,15 +75,6 @@ export default function Footer() {
               <p>
                 <a href="tel:+923247718001" className="text-primary hover:underline">+92-324-7718001</a>
               </p>
-              <p>
-                <a href="https://wa.me/923247718001" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/60 hover:text-primary transition-colors gap-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" aria-hidden>
-                    <path d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 .03 5.34.03 12c0 2  .52 3.94 1.5 5.64L0 24l6.6-1.73A11.94 11.94 0 0012 24c6.63 0 11.97-5.34 11.97-12 0-1.97-.45-3.85-1.45-5.52zM12 21.5c-1.9 0-3.72-.5-5.3-1.43l-.38-.22-3.92 1.03 1.05-3.82-.25-.39A9.48 9.48 0 012.5 12c0-5.25 4.25-9.5 9.5-9.5S21.5 6.75 21.5 12 17.25 21.5 12 21.5z" />
-                    <path d="M17.2 14.1c-.3-.2-1.8-.9-2-.9-.2 0-.3-.2-.6.2s-.7.9-.9 1.1c-.2.2-.4.3-.7.1-.9-.5-2.3-1.5-3.2-2.6-.2-.3 0-.5.2-.7.2-.2.3-.4.5-.6.2-.2.2-.4.3-.6 0-.2 0-.4-.1-.6-.1-.2-.9-2.2-1.2-3-.3-.8-.6-.6-.8-.6-.2 0-.4 0-.6 0-.2 0-.6.1-.9.5-.3.4-1 1-1 2.4s1 2.8 1.1 3c.1.2 1.9 3 4.6 4.4 3 .6 3.3.5 3.8.5.5 0 1.6-.6 1.8-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.6-.4z" />
-                  </svg>
-                  <span className="hidden sm:inline">WhatsApp</span>
-                </a>
-              </p>
             </div>
           </div>
           <div>

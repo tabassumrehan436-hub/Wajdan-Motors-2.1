@@ -1,14 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import CarForm from "@/components/admin/CarForm";
 import { useBackendCars, type Car } from "@/hooks/useBackendCars";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, Pencil, Trash2, Check } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, Check, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function AdminCars() {
+  const navigate = useNavigate();
   const { cars, loading, addCar, updateCar, deleteCar } = useBackendCars();
   const [searchQuery, setSearchQuery] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -64,6 +66,10 @@ export default function AdminCars() {
     } else {
       toast({ title: "Error", description: result.error, variant: "destructive" });
     }
+  };
+
+  const handleViewCar = (carId: number) => {
+    navigate(`/inventory/${carId}`);
   };
 
   return (
@@ -171,6 +177,15 @@ export default function AdminCars() {
                         </td>
                         <td className="p-4">
                           <div className="flex items-center justify-end gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleViewCar(car.id)}
+                              className="h-8 w-8 text-primary hover:text-primary/80"
+                              title="View Car"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Button>
                             <Button
                               variant="ghost"
                               size="icon"

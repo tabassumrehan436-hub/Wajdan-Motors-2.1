@@ -41,10 +41,10 @@ export default function WishlistPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {wishlist.map((car) => (
-              <div
-                key={car.id}
-                className="bg-card rounded-lg sm:rounded-2xl border border-border overflow-hidden group hover:shadow-lg transition-all duration-300"
-              >
+              <Link to={`/car/${car.id}`} key={car.id} className="block">
+                <div
+                  className="bg-card rounded-lg sm:rounded-2xl border border-border overflow-hidden group hover:shadow-lg transition-all duration-300 h-full cursor-pointer"
+                >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <img
                     src={car.primary_image || '/uploads/placeholder.png'}
@@ -73,7 +73,8 @@ export default function WishlistPage() {
                     </Button>
                   </div>
                 </div>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         )}

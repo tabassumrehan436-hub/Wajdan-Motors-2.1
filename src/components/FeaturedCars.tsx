@@ -129,7 +129,8 @@ function formatPrice(num?: number | null) {
                      key={car.id}
                      className="flex-[0_0_100%] sm:flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0"
                    >
-                     <div className="group relative bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-sm rounded-lg sm:rounded-2xl border border-white/10 overflow-hidden hover:border-primary/50 transition-all duration-500">
+                     <Link to={`/car/${car.id}`} className="block h-full">
+                       <div className="group relative bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-sm rounded-lg sm:rounded-2xl border border-white/10 overflow-hidden hover:border-primary/50 transition-all duration-500 h-full cursor-pointer">
                        {/* Tag Badge */}
                        <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-10">
                          <span className="px-2 sm:px-3 py-1 bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-full">
@@ -182,13 +183,9 @@ function formatPrice(num?: number | null) {
                                {formatPrice(car.price)}
                              </p>
                            </div>
-                           <Button
-                             asChild
-                             size="sm"
-                             className="w-full sm:w-auto bg-white/10 hover:bg-primary text-white border border-white/20 hover:border-primary transition-all text-xs sm:text-sm"
-                           >
-                             <Link to={`/car/${car.id}`}>View Details</Link>
-                           </Button>
+                           <span className="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-1.5 text-xs sm:text-sm font-medium bg-white/10 hover:bg-primary/20 text-white border border-white/20 rounded-md transition-all text-center">
+                             View Details →
+                           </span>
                          </div>
                        </div>
    
@@ -197,6 +194,7 @@ function formatPrice(num?: number | null) {
                          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 to-transparent" />
                        </div>
                      </div>
+                     </Link>
                    </motion.div>
                  ))
                )}
