@@ -1,11 +1,10 @@
 -- car_dealer_db.sql
--- Creates database and tables for Car Dealer Admin Panel (UTF8MB4)
+-- Tables for Car Dealer Admin Panel (UTF8MB4)
+-- NOTE: This file is intended to be imported into an existing database.
+-- Remove or do not run CREATE DATABASE / USE on shared hosts; import into
+-- the database you created via your hosting control panel (phpMyAdmin / hPanel).
 
-CREATE DATABASE IF NOT EXISTS `car_dealer_db`
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE `car_dealer_db`;
+-- Target schema name (for reference): `car_dealer_db`
 
 -- -----------------------------------------------------
 -- Table structure for `cars` (production-ready)

@@ -48,3 +48,19 @@ Options -Indexes
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header set X-XSS-Protection "1; mode=block"
 </IfModule>
+
+# SPA routing: send non-file/non-directory requests to index.html (allow /api/* to pass through)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Don't rewrite requests for existing files or directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Allow API endpoints to be served normally
+  RewriteRule ^api/ - [L]
+
+  # Fallback to index.html for client-side routing (enables /admin, /car/123, etc.)
+  RewriteRule ^ index.html [L]
+</IfModule>

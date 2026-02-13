@@ -28,30 +28,26 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize auth state
+  // Initialize auth state by checking server session
   useEffect(() => {
     const initAuth = async () => {
       try {
-        // Check if token exists in localStorage
-        const token = localStorage.getItem('adminToken');
-        
-        if (token) {
-          // Token exists, user was previously logged in
-          const mockUser: AdminUser = {
-            id: 'admin',
-            email: 'admin@wajdanmotors.com',
-            full_name: 'Admin User',
-            role: 'admin',
-            avatar_url: null,
-            phone_number: null,
-            created_at: new Date().toISOString(),
-          };
-          setAdminUser(mockUser);
+        const res = await fetch('/api/admin-session.php', { method: 'GET' });
+        if (!res.ok) {
+          setLoading(false);
+          return;
         }
-
-        setLoading(false);
+        const body = await res.json();
+        if (body.logged_in) {
+          setAdminUser({ id: body.admin.id, email: body.admin.username, role: 'admin' });
+          // store csrf token for use by admin requests
+          if (body.csrf_token) sessionStorage.setItem('csrfToken', body.csrf_token);
+          // keep a simple client-side flag for compatibility
+          localStorage.setItem('adminToken', 'server-session');
+        }
       } catch (err) {
         console.error('Init auth error:', err);
+      } finally {
         setLoading(false);
       }
     };
@@ -59,36 +55,33 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     initAuth();
   }, []);
 
-  // Admin login (local mock using localStorage)
+  // Admin login (server-backed)
   const adminLogin = useCallback(
     async (email: string, password: string) => {
       setError(null);
       setLoading(true);
       try {
-        // Simple demo credential check. Adjust or replace as needed.
-        if (email === 'admin' && password === 'admin123') {
-          // create a mock token with a decodable payload
-          const payload = { id: 'admin', username: email };
-          const token = `mock.${btoa(JSON.stringify(payload))}.sig`;
-          localStorage.setItem('adminToken', token);
-          const user: AdminUser = {
-            id: payload.id,
-            email: payload.username,
-            full_name: 'Admin User',
-            role: 'admin',
-            avatar_url: null,
-            phone_number: null,
-            created_at: new Date().toISOString(),
-          };
-          setAdminUser(user);
+        const res = await fetch('/api/admin-login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: email, password }),
+        });
+
+        const body = await res.json();
+        if (!res.ok || !body.success) {
+          const msg = body.message || 'Invalid credentials';
+          setError(msg);
           setLoading(false);
-          return { success: true };
+          return { success: false, error: msg };
         }
 
-        const errMsg = 'Invalid credentials';
-        setError(errMsg);
+        // store csrf token and set admin user
+        if (body.csrf_token) sessionStorage.setItem('csrfToken', body.csrf_token);
+        setAdminUser({ id: 1, email, role: 'admin' });
+        // compatibility flag for client-side checks
+        localStorage.setItem('adminToken', 'server-session');
         setLoading(false);
-        return { success: false, error: errMsg };
+        return { success: true };
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Login error.';
         setError(errorMsg);
@@ -99,9 +92,11 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  // Admin logout
+  // Admin logout (server-backed)
   const adminLogout = useCallback(async () => {
     try {
+      await fetch('/api/admin-logout.php', { method: 'POST' });
+      sessionStorage.removeItem('csrfToken');
       localStorage.removeItem('adminToken');
       setAdminUser(null);
       setError(null);
@@ -120,7 +115,8 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     loading,
     error,
     isAdmin: adminUser?.role === 'admin',
-    isAuthenticated: !!adminUser && !!localStorage.getItem('adminToken'),
+    // consider user authenticated when adminUser is present (server session validated)
+    isAuthenticated: !!adminUser,
     adminLogin,
     adminLogout,
     clearError,

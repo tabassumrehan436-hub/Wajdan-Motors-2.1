@@ -135,7 +135,11 @@ export function useBackendCars(): UseBackendCarsReturn {
         });
       }
 
-      const res = await fetch('/api/add-car.php', { method: 'POST', body: fd });
+      // attach CSRF token (set after admin login)
+      const csrf = sessionStorage.getItem('csrfToken');
+      if (csrf) fd.append('csrf_token', csrf);
+
+      const res = await fetch('/api/add-car.php', { method: 'POST', body: fd, credentials: 'same-origin' });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error || 'Failed to add car');
 
@@ -171,7 +175,11 @@ export function useBackendCars(): UseBackendCarsReturn {
         }
       });
 
-      const res = await fetch('/api/update-car.php', { method: 'POST', body: fd });
+      // attach CSRF token (set after admin login)
+      const csrf = sessionStorage.getItem('csrfToken');
+      if (csrf) fd.append('csrf_token', csrf);
+
+      const res = await fetch('/api/update-car.php', { method: 'POST', body: fd, credentials: 'same-origin' });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error || 'Failed to update car');
 
@@ -193,7 +201,11 @@ export function useBackendCars(): UseBackendCarsReturn {
     try {
       const fd = new FormData();
       fd.append('id', String(id));
-      const res = await fetch('/api/delete-car.php', { method: 'POST', body: fd });
+      // attach CSRF token (set after admin login)
+      const csrf = sessionStorage.getItem('csrfToken');
+      if (csrf) fd.append('csrf_token', csrf);
+
+      const res = await fetch('/api/delete-car.php', { method: 'POST', body: fd, credentials: 'same-origin' });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error || 'Failed to delete car');
 
