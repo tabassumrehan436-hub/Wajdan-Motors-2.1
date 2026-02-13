@@ -14,19 +14,24 @@ export default function CarDetailPage() {
   const { id } = useParams();
   const { cars } = useBackendCars();
   const [car, setCar] = useState<BackendCar | null>(null);
+  const [loading, setLoading] = useState(true);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    // prefer server single-car endpoint
+    setLoading(true);
     const load = async () => {
-      if (!id) return;
+      if (!id) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch(`/api/get-car.php?id=${encodeURIComponent(id)}`);
         if (!res.ok) throw new Error('Not found');
         const body = await res.json();
         if (body && body.id) {
           setCar(body);
+          setLoading(false);
           return;
         }
       } catch (err) {
@@ -34,8 +39,8 @@ export default function CarDetailPage() {
         const found = (cars || []).find((c) => c.id === Number(id));
         if (found) setCar(found);
       }
+      setLoading(false);
     };
-
     load();
   }, [id, cars]);
   // Contact number (country code + number without +)
@@ -59,6 +64,20 @@ export default function CarDetailPage() {
     description: car.description || "Premium quality vehicle with excellent condition and maintenance history."
   } : null;
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+            <p className="text-lg font-semibold">Loading car details...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
   if (!safecar) {
     return (
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -90,8 +109,14 @@ export default function CarDetailPage() {
     }
   };
 
-  // Use actual images array if available, otherwise fallback to primary_image
-  const images = (safecar.images && safecar.images.length > 0) ? safecar.images : [safecar.primary_image || '/uploads/placeholder.png'];
+  // Always filter images to remove null/empty, fallback to primary_image, then placeholder
+  let images: string[] = Array.isArray(safecar.images) ? safecar.images.filter((img) => !!img && img !== 'null' && img !== 'undefined') : [];
+  if (images.length === 0 && safecar.primary_image && safecar.primary_image !== 'null' && safecar.primary_image !== 'undefined') {
+    images = [safecar.primary_image];
+  }
+  if (images.length === 0) {
+    images = ['/uploads/placeholder.png'];
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
