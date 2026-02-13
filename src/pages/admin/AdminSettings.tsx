@@ -37,7 +37,9 @@ export default function AdminSettings() {
     // notify other components to refresh their view
     try {
       window.dispatchEvent(new CustomEvent('siteSettingsUpdated', { detail: settings }));
-    } catch (e) {}
+    } catch {
+      // Ignore errors from event dispatch
+    }
     toast({ title: "Settings Saved", description: "Your changes have been saved." });
   };
 

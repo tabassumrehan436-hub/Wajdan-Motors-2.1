@@ -24,27 +24,28 @@ export interface Car {
 }
 
 // Normalizer used everywhere to keep mapping consistent
-function normalizeCar(api: any): Car {
+function normalizeCar(api: unknown): Car {
+  const obj = api as Record<string, unknown>;
   return {
-    id: Number(api.id),
-    name: String(api.name),
-    make: api.make ?? null,
-    body_type: api.body_type ?? null,
-    year: api.year !== null && api.year !== undefined ? Number(api.year) : null,
-    price: api.price !== null && api.price !== undefined ? Number(api.price) : null,
-    mileage: api.mileage !== null && api.mileage !== undefined ? Number(api.mileage) : null,
-    primary_image: api.primary_image ?? (Array.isArray(api.images) && api.images[0]) ?? null,
-    images: Array.isArray(api.images) ? api.images : (api.images ? [api.images] : []),
-    status: api.status ?? null,
-    engine: api.engine ?? null,
-    transmission: api.transmission ?? null,
-    fuel_type: api.fuel_type ?? null,
-    color: api.color ?? null,
-    seating: api.seating !== null && api.seating !== undefined ? Number(api.seating) : null,
-    description: api.description ?? null,
-    features: api.features ?? null,
-    created_at: api.created_at ?? null,
-    updated_at: api.updated_at ?? null,
+    id: Number(obj.id),
+    name: String(obj.name),
+    make: (obj.make as string | null) ?? null,
+    body_type: (obj.body_type as string | null) ?? null,
+    year: obj.year !== null && obj.year !== undefined ? Number(obj.year) : null,
+    price: obj.price !== null && obj.price !== undefined ? Number(obj.price) : null,
+    mileage: obj.mileage !== null && obj.mileage !== undefined ? Number(obj.mileage) : null,
+    primary_image: (obj.primary_image as string | null) ?? (Array.isArray(obj.images) && obj.images[0]) ?? null,
+    images: Array.isArray(obj.images) ? (obj.images as string[]) : (obj.images ? [(obj.images as string)] : []),
+    status: (obj.status as string | null) ?? null,
+    engine: (obj.engine as string | null) ?? null,
+    transmission: (obj.transmission as string | null) ?? null,
+    fuel_type: (obj.fuel_type as string | null) ?? null,
+    color: (obj.color as string | null) ?? null,
+    seating: obj.seating !== null && obj.seating !== undefined ? Number(obj.seating) : null,
+    description: (obj.description as string | null) ?? null,
+    features: (obj.features as string | null) ?? null,
+    created_at: (obj.created_at as string | null) ?? null,
+    updated_at: (obj.updated_at as string | null) ?? null,
   };
 }
 
@@ -83,10 +84,10 @@ export function useBackendCars(): UseBackendCarsReturn {
       try {
         const res = await fetch('/api/get-cars.php');
         if (!res.ok) throw new Error(`Failed to fetch cars (${res.status})`);
-        const body = await res.json();
+        const body = await res.json() as { data: unknown[] };
         const data = Array.isArray(body.data) ? body.data : [];
         // Normalize using helper
-        const normalized = data.map((c: any) => normalizeCar(c));
+        const normalized = data.map((c: unknown) => normalizeCar(c));
         setCars(normalized);
       } catch (err) {
         console.error(err);
@@ -106,29 +107,29 @@ export function useBackendCars(): UseBackendCarsReturn {
     try {
       const fd = new FormData();
       fd.append('name', data.name as string);
-      fd.append('price', String((data as any).price ?? 0));
-      fd.append('make', (data as any).make ?? '');
-      fd.append('body_type', (data as any).body_type ?? '');
-      fd.append('year', String((data as any).year ?? ''));
-      fd.append('mileage', (data as any).mileage ?? '');
-      fd.append('status', (data as any).status ?? 'available');
-      fd.append('engine', (data as any).engine ?? '');
-      fd.append('transmission', (data as any).transmission ?? '');
-      fd.append('fuel_type', (data as any).fuel_type ?? '');
-      fd.append('color', (data as any).color ?? '');
-      fd.append('seating', String((data as any).seating ?? ''));
-      fd.append('description', (data as any).description ?? '');
-      fd.append('features', Array.isArray((data as any).features) ? (data as any).features.join(',') : ((data as any).features || ''));
+      fd.append('price', String((data.price ?? 0)));
+      fd.append('make', (data.make ?? ''));
+      fd.append('body_type', (data.body_type ?? ''));
+      fd.append('year', String((data.year ?? '')));
+      fd.append('mileage', String(data.mileage ?? ''));
+      fd.append('status', (data.status ?? 'available'));
+      fd.append('engine', (data.engine ?? ''));
+      fd.append('transmission', (data.transmission ?? ''));
+      fd.append('fuel_type', (data.fuel_type ?? ''));
+      fd.append('color', (data.color ?? ''));
+      fd.append('seating', String((data.seating ?? '')));
+      fd.append('description', (data.description ?? ''));
+      fd.append('features', Array.isArray(data.features) ? (data.features as string[]).join(',') : ((data.features as string) || ''));
 
       // primary image can be a data URL or external URL; only upload if data URL
-      const primary = (data as any).primary_image || '';
+      const primary = (data.primary_image || '') as string;
       if (typeof primary === 'string' && primary.startsWith('data:')) {
         fd.append('primary_image', base64ToFile(primary, 'primary.jpg'));
       }
 
       // additional images (base64)
-      if (Array.isArray((data as any).images)) {
-        (data as any).images.forEach((img: string, idx: number) => {
+      if (Array.isArray(data.images)) {
+        data.images.forEach((img: string, idx: number) => {
           if (typeof img === 'string' && img.startsWith('data:')) {
             fd.append('images[]', base64ToFile(img, `img_${idx}.jpg`));
           }
@@ -140,13 +141,13 @@ export function useBackendCars(): UseBackendCarsReturn {
       if (csrf) fd.append('csrf_token', csrf);
 
       const res = await fetch('/api/add-car.php', { method: 'POST', body: fd, credentials: 'same-origin' });
-      const body = await res.json();
+      const body = await res.json() as { error?: string; message?: string };
       if (!res.ok) throw new Error(body.error || 'Failed to add car');
 
       // Refresh list (use same normalizer)
       const refresh = await fetch('/api/get-cars.php');
-      const refreshed = await refresh.json();
-      setCars((refreshed.data || []).map((c: any) => normalizeCar(c)));
+      const refreshed = await refresh.json() as { data: unknown[] };
+      setCars((refreshed.data || []).map((c: unknown) => normalizeCar(c)));
 
       return { success: true };
     } catch (err) {
@@ -165,13 +166,13 @@ export function useBackendCars(): UseBackendCarsReturn {
         if (k === 'primary_image' && typeof v === 'string' && v.startsWith('data:')) {
           fd.append('primary_image', base64ToFile(v, 'primary.jpg'));
         } else if (k === 'images' && Array.isArray(v)) {
-          (v as any[]).forEach((img, idx) => {
+          (v as string[]).forEach((img, idx) => {
             if (typeof img === 'string' && img.startsWith('data:')) {
               fd.append('images[]', base64ToFile(img, `img_${idx}.jpg`));
             }
           });
         } else {
-          fd.append(k, String(v as any));
+          fd.append(k, String(v ?? ''));
         }
       });
 
@@ -180,13 +181,13 @@ export function useBackendCars(): UseBackendCarsReturn {
       if (csrf) fd.append('csrf_token', csrf);
 
       const res = await fetch('/api/update-car.php', { method: 'POST', body: fd, credentials: 'same-origin' });
-      const body = await res.json();
+      const body = await res.json() as { error?: string; message?: string };
       if (!res.ok) throw new Error(body.error || 'Failed to update car');
 
       // refresh (use normalizeCar)
       const refresh = await fetch('/api/get-cars.php');
-      const refreshed = await refresh.json();
-      setCars((refreshed.data || []).map((c: any) => normalizeCar(c)));
+      const refreshed = await refresh.json() as { data: unknown[] };
+      setCars((refreshed.data || []).map((c: unknown) => normalizeCar(c)));
 
       return { success: true };
     } catch (err) {

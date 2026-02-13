@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { getOrders as getStoredOrders, updateOrderStatus as updateStoredOrderStatus, deleteOrder as deleteStoredOrder } from '../lib/carsData';
 
 export interface OrderWithDetails {
@@ -40,11 +40,16 @@ function useBackendOrders(): UseBackendOrdersReturn {
     }
   }, []);
 
+  // Load orders on mount
+  useEffect(() => {
+    getAllOrders();
+  }, [getAllOrders]);
+
   const updateOrderStatus = useCallback(async (id: string, status: OrderWithDetails['status']) => {
     setLoading(true);
     setError(null);
     try {
-      const updated = updateStoredOrderStatus(id, status as any);
+      const updated = updateStoredOrderStatus(id, status || 'pending');
       return !!updated;
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to update order';

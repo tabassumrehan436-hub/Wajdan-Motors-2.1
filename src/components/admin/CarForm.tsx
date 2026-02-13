@@ -45,7 +45,7 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
     images: car?.images || [],
     description: car?.description || "",
     seating: car?.seating ? String(car.seating) : "5",
-    features: Array.isArray(car?.features) ? (car!.features as any).join(", ") : (car?.features || ""),
+    features: Array.isArray(car?.features) ? (car.features as string[]).join(", ") : (car?.features as string) || "",
   });
 
   const [dragActive, setDragActive] = useState(false);
@@ -78,7 +78,7 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
       features: featuresList,
       primary_image: formData.primary_image || formData.images[0] || "",
       images: formData.images.length > 0 ? formData.images : undefined,
-    } as any);
+    });
   };
 
   // Handle file input change

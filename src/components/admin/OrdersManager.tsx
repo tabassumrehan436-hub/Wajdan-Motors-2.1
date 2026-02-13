@@ -33,7 +33,7 @@ export default function OrdersManager() {
   // Load orders on mount
   useEffect(() => {
     loadOrders();
-  }, []);
+  }, [filterStatus]);
 
   const loadOrders = async () => {
     setLocalError(null);
@@ -186,7 +186,7 @@ export default function OrdersManager() {
                         PKR {order.total_amount?.toLocaleString()}
                       </TableCell>
                       <TableCell>
-                        <Select value={order.status} onValueChange={(newStatus) => handleStatusChange(order.id, newStatus as any)}>
+                        <Select value={order.status} onValueChange={(newStatus) => handleStatusChange(order.id, newStatus as 'pending' | 'approved' | 'rejected' | 'completed')}>
                           <SelectTrigger className="w-32">
                             <SelectValue />
                           </SelectTrigger>
