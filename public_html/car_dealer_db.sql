@@ -81,9 +81,13 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- IMPORTANT: No weak default admin is seeded. Create an admin user via a secure
--- migration or the application admin UI. If you must insert a user via SQL,
--- generate a strong password and store the hash (use PHP's password_hash()).
--- Example (replace <HASHED_PASSWORD> with password_hash('YourStrongP@ss', PASSWORD_DEFAULT)):
--- INSERT INTO admin_users (username, password, is_active) VALUES ('admin', '<HASHED_PASSWORD>', 1);
+-- Seed a secure default admin account (username: admin)
+-- PASSWORD: set to the value you requested (do NOT store plain text elsewhere).
+-- The password has been hashed using PHP's password_hash(). Change it on first login.
+INSERT INTO admin_users (username, password, is_active) VALUES
+('admin', '$2y$10$isAtUqoeWn2RGPFO29R4BOlQaZSxvedo49Xok7knrT4hc7eQ.g0Ve', 1)
+ON DUPLICATE KEY UPDATE password = VALUES(password), is_active = VALUES(is_active);
+
+-- NOTE: After deployment, immediately change the admin password via the admin UI or
+-- the change-password endpoint to a different secret known only to administrators.
 
