@@ -32,12 +32,27 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        if (localStorage.getItem('adminToken')) {
-          const username = localStorage.getItem('adminUsername');
-          setAdminUser({ id: '1', email: username || 'wajdan', role: 'admin' });
+        const token = localStorage.getItem('adminToken');
+        const username = localStorage.getItem('adminUsername');
+        
+        // Only restore session if we have BOTH token and username present
+        // This prevents false positives from stale localStorage data
+        if (token && username && token === 'frontend-session') {
+          setAdminUser({ id: '1', email: username, role: 'admin' });
+        } else {
+          // Clear any invalid or partial authentication data
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUsername');
+          sessionStorage.removeItem('csrfToken');
+          setAdminUser(null);
         }
       } catch (err) {
         console.error('Init auth error:', err);
+        // On any error, clear auth data and require fresh login
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUsername');
+        sessionStorage.removeItem('csrfToken');
+        setAdminUser(null);
       } finally {
         setLoading(false);
       }

@@ -31,7 +31,7 @@ const PAKISTAN_CAR_BRANDS = [
 export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
   const [formData, setFormData] = useState({
     name: car?.name || "",
-    price: Number(car?.price ?? 0),
+    price: car?.price ? String(car.price) : "",
     year: car?.year ? String(car.year) : String(new Date().getFullYear()),
     mileage: car?.mileage ? String(car.mileage) : "",
     make: (car?.make as string) || "",
@@ -54,7 +54,7 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const priceFormatted = `PKR ${(Number(formData.price) / 1000000).toFixed(1)}M`;
+    const priceValue = Number(formData.price) || 0;
     const featuresList = formData.features
       .split(",")
       .map((f) => f.trim())
@@ -63,7 +63,7 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
     // map to backend-friendly shape (use snake_case keys only)
     onSubmit({
       name: formData.name,
-      price: Number(formData.price),
+      price: priceValue,
       make: formData.make,
       body_type: formData.body_type,
       year: Number(formData.year) || null,
@@ -215,9 +215,11 @@ export default function CarForm({ car, onSubmit, onCancel }: CarFormProps) {
               <Input
                 type="number"
                 value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                onFocus={(e) => e.target.select()}
                 placeholder="10000000"
                 required
+                min="0"
               />
             </div>
 

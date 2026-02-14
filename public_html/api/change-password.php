@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/auth.php';
 
 // change-password.php - Protected endpoint to change admin password
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

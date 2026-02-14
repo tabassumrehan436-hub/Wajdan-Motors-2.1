@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/auth.php';
 
 // delete-car.php - Deletes a car and its images
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
