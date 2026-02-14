@@ -8,7 +8,7 @@
     Require valid-user
 </Files>
 
-<Directory /home/u780083771/public_html/admin>
+<ht accessDirectory /home/u780083771/public_html/admin>
     AuthType Basic
     AuthName "Admin Area - Login Required"
     AuthUserFile /home/u780083771/public_html/.htpasswd
