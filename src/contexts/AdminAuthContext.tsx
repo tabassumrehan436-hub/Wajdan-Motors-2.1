@@ -28,22 +28,13 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize auth state by checking server session
+  // Initialize auth state - check localStorage for existing session
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const res = await fetch('/api/admin-session.php', { method: 'GET' });
-        if (!res.ok) {
-          setLoading(false);
-          return;
-        }
-        const body = await res.json();
-        if (body.logged_in) {
-          setAdminUser({ id: body.admin.id, email: body.admin.username, role: 'admin' });
-          // store csrf token for use by admin requests
-          if (body.csrf_token) sessionStorage.setItem('csrfToken', body.csrf_token);
-          // keep a simple client-side flag for compatibility
-          localStorage.setItem('adminToken', 'server-session');
+        if (localStorage.getItem('adminToken')) {
+          const username = localStorage.getItem('adminUsername');
+          setAdminUser({ id: '1', email: username || 'wajdan', role: 'admin' });
         }
       } catch (err) {
         console.error('Init auth error:', err);
@@ -55,33 +46,34 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     initAuth();
   }, []);
 
-  // Admin login (server-backed)
+  // Admin login - frontend only (hardcoded credentials)
   const adminLogin = useCallback(
     async (email: string, password: string) => {
       setError(null);
       setLoading(true);
-      try {
-        const res = await fetch('/api/admin-login.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: email, password }),
-        });
+      
+      // Hardcoded credentials
+      const ADMIN_USERNAME = 'wajdan';
+      const ADMIN_PASSWORD = 'rehan110';
 
-        const body = await res.json();
-        if (!res.ok || !body.success) {
-          const msg = body.message || 'Invalid credentials';
+      try {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        if (email === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+          // Set admin user and tokens
+          setAdminUser({ id: '1', email, role: 'admin' });
+          localStorage.setItem('adminToken', 'frontend-session');
+          localStorage.setItem('adminUsername', email);
+          sessionStorage.setItem('csrfToken', 'frontend-token-' + Date.now());
+          setLoading(false);
+          return { success: true };
+        } else {
+          const msg = 'Invalid credentials';
           setError(msg);
           setLoading(false);
           return { success: false, error: msg };
         }
-
-        // store csrf token and set admin user
-        if (body.csrf_token) sessionStorage.setItem('csrfToken', body.csrf_token);
-        setAdminUser({ id: 1, email, role: 'admin' });
-        // compatibility flag for client-side checks
-        localStorage.setItem('adminToken', 'server-session');
-        setLoading(false);
-        return { success: true };
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Login error.';
         setError(errorMsg);
@@ -92,12 +84,12 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  // Admin logout (server-backed)
+  // Admin logout - frontend only
   const adminLogout = useCallback(async () => {
     try {
-      await fetch('/api/admin-logout.php', { method: 'POST' });
       sessionStorage.removeItem('csrfToken');
       localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUsername');
       setAdminUser(null);
       setError(null);
     } catch (err) {
