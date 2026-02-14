@@ -46,6 +46,12 @@ $description = isset($_POST['description']) ? trim($_POST['description']) : null
 $features = isset($_POST['features']) ? trim($_POST['features']) : null;
 
 try {
+    // Check if database is connected
+    if ($pdo === null) {
+        error_log('ADD-CAR ERROR: Database not connected');
+        respond(['error' => 'Database temporary unavailable. Hostinger credentials need to be configured.'], 503);
+    }
+
     // Handle primary image
     $primaryImagePath = null;
     if (isset($_FILES['primary_image']) && $_FILES['primary_image']['error'] !== UPLOAD_ERR_NO_FILE) {

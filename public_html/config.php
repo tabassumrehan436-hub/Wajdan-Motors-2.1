@@ -34,6 +34,7 @@ set_exception_handler(function ($e) {
 });
 
 // ---- Create PDO connection ----
+$pdo = null;
 try {
     $dsn = "mysql:host={$DB_HOST};port={$DB_PORT};dbname={$DB_NAME};charset=utf8mb4";
     $pdo = new PDO($dsn, $DB_USER, $DB_PASS, [
@@ -41,10 +42,13 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
     ]);
+    error_log('Database connected successfully');
 } catch (PDOException $ex) {
-    // Do not reveal DB details in production
+    // Log but don't die - allow frontend-only mode
     error_log('DB Connection error: ' . $ex->getMessage());
-    respond(['error' => 'Database connection failed'], 500);
+    error_log('DB CONFIG - Host: ' . $DB_HOST . ', DB: ' . $DB_NAME . ', User: ' . $DB_USER);
+    $pdo = null;
+    // Don't call respond() here - let it continue for frontend mode
 }
 
 // ---- Ensure uploads directory exists and is not executable ----
