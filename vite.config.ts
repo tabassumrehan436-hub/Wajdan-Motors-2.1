@@ -12,11 +12,15 @@ export default defineConfig({
     },
     // Proxy API requests to PHP backend
     proxy: {
-      '/api': {
-        target: 'http://localhost:8081',
+      "/api": {
+        target: "http://localhost:8081",
         changeOrigin: true,
       },
     },
+  },
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
   },
   plugins: [react()],
   resolve: {

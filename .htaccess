@@ -1,0 +1,28 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Set the base path
+  RewriteBase /
+  
+  # If the request is not for a real file
+  RewriteCond %{REQUEST_FILENAME} !-f
+  # And not for a directory
+  RewriteCond %{REQUEST_FILENAME} !-d
+  # And not for API requests (these should be handled by PHP)
+  RewriteCond %{REQUEST_URI} !^/api/ [NC]
+  # And not for admin (PHP backend)
+  RewriteCond %{REQUEST_URI} !^/admin/ [NC]
+  
+  # Then rewrite to index.html (for React Router)
+  RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+# Caching headers for static assets
+<FilesMatch "\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$">
+  Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# Don't cache HTML files
+<FilesMatch "\.html$">
+  Header set Cache-Control "max-age=0, public, must-revalidate"
+</FilesMatch>

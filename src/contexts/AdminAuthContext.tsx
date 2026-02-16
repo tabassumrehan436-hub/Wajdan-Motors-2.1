@@ -61,34 +61,23 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     initAuth();
   }, []);
 
-  // Admin login - frontend only (hardcoded credentials)
+  // Admin login - auto-authenticate without password
   const adminLogin = useCallback(
     async (email: string, password: string) => {
       setError(null);
       setLoading(true);
-      
-      // Hardcoded credentials
-      const ADMIN_USERNAME = 'wajdan';
-      const ADMIN_PASSWORD = 'rehan110';
 
       try {
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        if (email === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-          // Set admin user and tokens
-          setAdminUser({ id: '1', email, role: 'admin' });
-          localStorage.setItem('adminToken', 'frontend-session');
-          localStorage.setItem('adminUsername', email);
-          sessionStorage.setItem('csrfToken', 'frontend-token-' + Date.now());
-          setLoading(false);
-          return { success: true };
-        } else {
-          const msg = 'Invalid credentials';
-          setError(msg);
-          setLoading(false);
-          return { success: false, error: msg };
-        }
+        // Auto-authenticate without password check
+        setAdminUser({ id: '1', email: email || 'admin', role: 'admin' });
+        localStorage.setItem('adminToken', 'frontend-session');
+        localStorage.setItem('adminUsername', email || 'admin');
+        sessionStorage.setItem('csrfToken', 'frontend-token-' + Date.now());
+        setLoading(false);
+        return { success: true };
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Login error.';
         setError(errorMsg);

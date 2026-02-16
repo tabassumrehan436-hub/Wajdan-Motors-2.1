@@ -4,13 +4,13 @@
 <Files ~ "\.(php)$">
     AuthType Basic
     AuthName "Admin Area - Login Required"
-    AuthUserFile /home/u780083771/public_html/.htpasswd
+    AuthUserFile /home/[YOUR_CPANEL_USERNAME]/public_html/.htpasswd
     Require valid-user
 </Files>
 
-<ht accessDirectory /home/u780083771/public_html/admin>
+<Directory /home/[YOUR_CPANEL_USERNAME]/public_html/admin>
     AuthType Basic
     AuthName "Admin Area - Login Required"
-    AuthUserFile /home/u780083771/public_html/.htpasswd
+    AuthUserFile /home/[YOUR_CPANEL_USERNAME]/public_html/.htpasswd
     Require valid-user
 </Directory>
