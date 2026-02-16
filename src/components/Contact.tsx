@@ -14,8 +14,8 @@ const contactSchema = z.object({
   message: z.string().trim().min(1, "Message is required").max(1000, "Message must be less than 1000 characters"),
 });
 
-// Wajdan Motors contact number
-const PHONE_NUMBER = "923247718001"; // Format: country code + number without + or spaces
+// Bloodline Motors contact number
+const PHONE_NUMBER = "923134959787"; // Format: country code + number without + or spaces
 
 export default function Contact() {
   const { toast } = useToast();
@@ -107,25 +107,25 @@ export default function Contact() {
               <span className="text-primary font-bold tracking-[0.1em] sm:tracking-[0.2em] text-xs sm:text-sm uppercase">Contact Us</span>
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-heading font-black mt-2 sm:mt-4 mb-4 sm:mb-6 leading-tight">
-              GET IN TOUCH <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">WITH WAJDAN</span>
+              GET IN TOUCH <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">WITH BLOODLINE</span>
             </h2>
             <p className="text-white/60 text-sm sm:text-base md:text-lg leading-relaxed max-w-md border-l-4 border-white/10 pl-4 sm:pl-6 my-6 sm:my-8">
-              Visit our showroom in Faisalabad or send us a message to schedule a private viewing of our exclusive inventory.
+              Visit our showroom in Lahore or send us a message to schedule a private viewing of our exclusive inventory.
             </p>
             
             <div className="mt-8 sm:mt-12 space-y-4 sm:space-y-6">
-              <a href="https://maps.app.goo.gl/PjB8d4zCLHqWYwhE6" target="_blank" rel="noopener noreferrer" className="block cursor-pointer group hover:opacity-80 transition-opacity">
+              <div className="block cursor-default group">
                 <p className="text-xs text-white/40 uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">Visit Us</p>
-                <p className="text-lg sm:text-xl font-bold group-hover:text-primary transition-colors">Faisalabad, Pakistan</p>
-                <p className="text-base sm:text-xl text-white/60 group-hover:text-primary transition-colors">Canal Road, Near McDonald's</p>
-              </a>
+                <p className="text-lg sm:text-xl font-bold group-hover:text-primary transition-colors">Lahore, Pakistan</p>
+                <p className="text-base sm:text-xl text-white/60 group-hover:text-primary transition-colors">Lahore Johar Town</p>
+              </div>
               <div>
                 <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Call Us</p>
                 <button 
                   onClick={handleCall}
                   className="text-xl sm:text-2xl font-heading font-bold text-primary block hover:text-primary/80 transition-colors"
                 >
-                  +92-324-7718001
+                  +92-313-4959787
                 </button>
               </div>
               

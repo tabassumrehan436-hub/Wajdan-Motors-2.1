@@ -17,7 +17,7 @@ export default function Hero() {
       {/* Background Image */}
       <motion.img
         src={heroImage}
-        alt="Wajdan Motors - Premium Car"
+        alt="Bloodline Motors - Premium Car"
         loading="eager"
         decoding="async"
         width={1920}
@@ -41,10 +41,10 @@ export default function Hero() {
           className="w-full max-w-2xl"
         >
           <p className="text-primary font-bold text-xs sm:text-sm tracking-widest uppercase mb-2 sm:mb-3">
-            Faisalabad's Premium Dealer
+            Lahore's Premium Dealer
           </p>
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] mb-1 sm:mb-2 tracking-tighter font-heading">
-            WAJDAN MOTORS
+            BLOODLINE MOTORS
           </h1>
           <p className="text-white/70 text-base sm:text-lg md:text-xl font-light mb-6 sm:mb-8 tracking-wide">
             Buy · Sell · Exchange

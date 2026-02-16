@@ -56,7 +56,7 @@ export default function AboutPage() {
     return () => window.removeEventListener('siteSettingsUpdated', h);
   }, []);
 
-  const phoneDisplay = settings.phone || '+92-324-7718001';
+  const phoneDisplay = settings.phone || '+92-313-4959787 | +92-327-0202782';
   const workingHours = settings.workingHours || 'Mon - Sat: 10 AM - 8 PM\nSunday: 12 PM - 6 PM';
 
   return (
@@ -66,7 +66,7 @@ export default function AboutPage() {
       
       {/* Hero Section */}
       <section className="min-h-[400px] sm:min-h-[500px] md:min-h-[600px] bg-dark-surface relative flex items-center justify-center overflow-hidden">
-        <img src={heroImage} alt="Wajdan Motors" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+        <img src={heroImage} alt="Bloodline Motors" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
         <motion.div 
           className="relative z-10 text-center px-4 sm:px-6"
@@ -75,10 +75,10 @@ export default function AboutPage() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-heading font-black uppercase text-dark-surface-foreground tracking-tight mb-3 sm:mb-4 text-glow">
-            About Wajdan Motors
+            About Bloodline Motors
           </h1>
           <p className="text-white/80 text-xs sm:text-base md:text-lg lg:text-xl font-light tracking-wide max-w-2xl mx-auto">
-            Faisalabad's Most Trusted Name in Pre-Owned Automobiles Since 2009
+            Lahore's Most Trusted Name in Pre-Owned Automobiles Since 2009
           </p>
         </motion.div>
       </section>
@@ -115,9 +115,9 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-3 sm:space-y-4 text-muted-foreground leading-relaxed text-xs sm:text-sm md:text-base">
                 <p>
-                  Wajdan Motors was founded in 2009 with a simple mission: to make buying a used car as 
+                  Bloodline Motors was founded in 2009 with a simple mission: to make buying a used car as 
                   trustworthy and transparent as buying a new one. What started as a small showroom on 
-                  Canal Road has grown into Faisalabad's premier destination for pre-owned vehicles.
+                  Lahore Johar Town has grown into a premier destination for pre-owned vehicles.
                 </p>
                 <p>
                   Over the years, we've helped thousands of families find their perfect car. Our success 
@@ -149,14 +149,14 @@ export default function AboutPage() {
               <div className="aspect-square rounded-lg sm:rounded-2xl overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=800&auto=format&fit=crop" 
-                  alt="Wajdan Motors Showroom" 
+                  alt="Bloodline Motors Showroom" 
                   className="w-full h-full object-cover"
                 />
               </div>
               {/* Floating card */}
               <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-card p-4 sm:p-6 rounded-lg sm:rounded-2xl border border-border shadow-xl max-w-[160px] sm:max-w-[200px]">
                 <div className="text-3xl sm:text-4xl font-heading font-black text-primary">15+</div>
-                <div className="text-[10px] sm:text-sm text-muted-foreground">Years of Excellence in Faisalabad</div>
+                <div className="text-[10px] sm:text-sm text-muted-foreground">Years of Excellence in Lahore</div>
               </div>
             </motion.div>
           </div>
@@ -222,7 +222,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-primary font-bold uppercase tracking-widest text-[10px] sm:text-xs">Why Wajdan Motors</span>
+              <span className="text-primary font-bold uppercase tracking-widest text-[10px] sm:text-xs">Why Bloodline Motors</span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-black uppercase mt-2 mb-4 sm:mb-6">
                 Your Trusted Partner
               </h2>
@@ -254,18 +254,18 @@ export default function AboutPage() {
             </h2>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-            <a href="https://maps.app.goo.gl/PjB8d4zCLHqWYwhE6" target="_blank" rel="noopener noreferrer" className="no-underline cursor-pointer group hover:opacity-80 transition-opacity">
+            <div className="no-underline cursor-default group">
               <div className="bg-background p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-2xl border border-border group-hover:border-primary/50 transition-colors h-full">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors">
                   <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <h3 className="text-xs sm:text-sm md:text-lg font-bold uppercase mb-2 group-hover:text-primary transition-colors">Location</h3>
                 <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm group-hover:text-primary transition-colors">
-                  Canal Road, Near McDonald's<br/>
-                  Faisalabad, Pakistan
+                  Lahore Johar Town<br/>
+                  Pakistan
                 </p>
               </div>
-            </a>
+            </div>
             <div className="bg-background p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-2xl border border-border">
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-3 sm:mb-4">
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -273,7 +273,7 @@ export default function AboutPage() {
               <h3 className="text-xs sm:text-sm md:text-lg font-bold uppercase mb-2">Contact</h3>
               <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm">
                 {phoneDisplay}<br/>
-                sales@wajdanmotors.com
+                sales@bloodlinemotors.com
               </p>
             </div>
             <div className="bg-background p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-2xl border border-border">

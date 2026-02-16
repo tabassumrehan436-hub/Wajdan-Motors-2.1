@@ -250,7 +250,7 @@ export default function FinancingPage() {
       <Breadcrumbs />
       {/* Hero Header */}
       <div className="bg-dark-surface text-dark-surface-foreground py-12 sm:py-16 md:py-24 relative overflow-hidden">
-        <img src={heroImage} alt="Wajdan Motors" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+        <img src={heroImage} alt="Bloodline Motors" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
         <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center max-w-4xl">
           <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-heading font-black uppercase tracking-tight mb-4 sm:mb-6">

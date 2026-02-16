@@ -8,7 +8,7 @@
      role: "Business Owner",
      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
      rating: 5,
-     text: "Wajdan Motors ne mujhe meri dream car dilwai. Bahut transparent dealing aur excellent after-sales service. Highly recommended!",
+     text: "Bloodline Motors ne mujhe meri dream car dilwai. Bahut transparent dealing aur excellent after-sales service. Highly recommended!",
    },
    {
      id: 2,
