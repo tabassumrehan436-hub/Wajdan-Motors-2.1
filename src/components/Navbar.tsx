@@ -50,24 +50,17 @@ export default function Navbar() {
           scrolled ? 'fixed bg-dark-surface shadow-md' : 'absolute bg-transparent'
         }`}
         role="navigation"
-        style={
-          scrolled
-            ? { margin: 0, padding: 0 }
-            : { margin: 0, padding: 0 }
-        }
       >
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           
           {/* Left: Logo & Nav */}
           <div className="flex items-center gap-6 sm:gap-8 lg:gap-12">
             {/* Logo */}
-            <Link to="/" className="relative z-50 group block shrink-0">
+            <Link to="/" className="relative z-50 group block shrink-0 flex items-center">
               <img
                 src={logo}
                 alt="Bloodline Motors FSD"
-                className={`h-10 sm:h-12 md:h-14 w-auto max-w-[140px] sm:max-w-[160px] md:max-w-[200px] object-contain transition-all duration-300 ease-out ${
-                  scrolled ? 'brightness-0 invert' : 'brightness-100 invert-0'
-                }`}
+                className="navbar-logo"
               />
             </Link>
 
@@ -131,7 +124,7 @@ export default function Navbar() {
       </nav>
 
       {/* Placeholder to avoid layout shift when navbar becomes fixed */}
-      {scrolled && <div aria-hidden className="w-full h-14 sm:h-16 md:h-20" />}
+      {scrolled && <div aria-hidden className="w-full h-16 sm:h-20 md:h-24" />}
 
       {/* Mobile Menu */}
       <div className={`fixed inset-0 z-40 lg:hidden transition-all duration-500 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>

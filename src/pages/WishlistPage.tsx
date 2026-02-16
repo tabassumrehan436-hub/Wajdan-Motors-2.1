@@ -10,7 +10,7 @@ export default function WishlistPage() {
   const { wishlist, removeFromWishlist } = useWishlist();
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden pt-0">
       <Navbar />
       <Breadcrumbs />
 

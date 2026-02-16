@@ -599,6 +599,31 @@
   }
 
   /* ========================================
+     NAVBAR LOGO - CONSISTENT STYLING
+     Reusable logo styling across all pages
+     ======================================== */
+
+  .navbar-logo {
+    /* Responsive height: 40px (mobile) → 48px (sm) → 56px (md) */
+    height: clamp(2.5rem, 8vw, 3.5rem);
+    width: auto;
+    max-width: 200px;
+    /* Maintain aspect ratio without distortion */
+    object-fit: contain;
+    object-position: left center;
+    /* Smooth transitions */
+    transition: transform 300ms ease-out;
+    /* Hardware acceleration */
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .navbar-logo:hover {
+    /* Subtle hover effect */
+    transform: scale(1.02);
+  }
+
+  /* ========================================
      ULTRA-WIDE SCREEN OPTIMIZATIONS (2560px+)
      ======================================== */
 
@@ -614,6 +639,10 @@
     .px-ultra-wide {
       padding-left: clamp(3rem, 6vw, 6rem);
       padding-right: clamp(3rem, 6vw, 6rem);
+    }
+
+    .navbar-logo {
+      max-width: 240px;
     }
   }
 }

@@ -245,7 +245,7 @@ export default function FinancingPage() {
   }, [durationInput, formatNumber]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden pt-0">
       <Navbar />
       <Breadcrumbs />
       {/* Hero Header */}

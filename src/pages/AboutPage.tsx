@@ -60,7 +60,7 @@ export default function AboutPage() {
   const workingHours = settings.workingHours || 'Mon - Sat: 10 AM - 8 PM\nSunday: 12 PM - 6 PM';
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden pt-0">
       <Navbar />
       <Breadcrumbs />
       

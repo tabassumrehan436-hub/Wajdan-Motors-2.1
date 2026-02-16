@@ -66,7 +66,7 @@ export default function CarDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col">
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col pt-0">
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -80,7 +80,7 @@ export default function CarDetailPage() {
   }
   if (!safecar) {
     return (
-      <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden pt-0">
         <Navbar />
         <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-3 sm:mb-4">Car Not Found</h1>
@@ -119,7 +119,7 @@ export default function CarDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden pt-0">
       <Navbar />
       <Breadcrumbs />
 
