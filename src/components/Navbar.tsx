@@ -59,7 +59,7 @@ export default function Navbar() {
             <Link to="/" className="relative z-50 group block shrink-0 flex items-center">
               <img
                 src={logo}
-                alt="Bloodline Motors FSD"
+                alt="Car Club FSD"
                 className="navbar-logo"
               />
             </Link>
@@ -102,12 +102,12 @@ export default function Navbar() {
             </Link>
 
             {/* Phone */}
-            <a href="tel:+923134959787" className={`hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full transition-all duration-300 ${scrolled ? 'bg-white/5 text-white hover:bg-white/15' : 'bg-white/10 text-white hover:bg-white/20'}`} aria-label="Call">
+            <a href="tel:+923256750000" className={`hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full transition-all duration-300 ${scrolled ? 'bg-white/5 text-white hover:bg-white/15' : 'bg-white/10 text-white hover:bg-white/20'}`} aria-label="Call">
               <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
             </a>
 
             {/* WhatsApp */}
-            <a href="https://wa.me/923134959787" target="_blank" rel="noopener noreferrer" className={`hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full transition-all duration-300 ${scrolled ? 'bg-[#25D366] text-white hover:bg-[#25D366]/90' : 'bg-[#25D366] text-white hover:bg-[#25D366]/90'}`} aria-label="WhatsApp">
+            <a href="https://wa.me/923256750000" target="_blank" rel="noopener noreferrer" className={`hidden sm:flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full transition-all duration-300 ${scrolled ? 'bg-[#25D366] text-white hover:bg-[#25D366]/90' : 'bg-[#25D366] text-white hover:bg-[#25D366]/90'}`} aria-label="WhatsApp">
               <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
             </a>
 
@@ -161,11 +161,11 @@ export default function Navbar() {
             </div>
 
             <div className="flex flex-col gap-4 mt-4">
-              <a href="tel:+923134959787" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 min-h-[52px] py-3 px-4 rounded-lg bg-white text-dark-surface font-bold border border-white/10 text-base transition-transform duration-150 active:scale-95">
+              <a href="tel:+923256750000" onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 min-h-[52px] py-3 px-4 rounded-lg bg-white text-dark-surface font-bold border border-white/10 text-base transition-transform duration-150 active:scale-95">
                 <Phone className="w-5 h-5" />
                 <span>Call</span>
               </a>
-              <a href="https://wa.me/923134959787" target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-3 min-h-[52px] py-3 px-4 rounded-lg bg-[#25D366] text-white font-bold text-base transition-transform duration-150 active:scale-95">
+              <a href="https://wa.me/923256750000" target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-3 min-h-[52px] py-3 px-4 rounded-lg bg-[#25D366] text-white font-bold text-base transition-transform duration-150 active:scale-95">
                 <MessageSquare className="w-5 h-5" />
                 <span>WhatsApp</span>
               </a>

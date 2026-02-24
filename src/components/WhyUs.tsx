@@ -36,10 +36,10 @@ export default function WhyUs() {
         <div className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto">
           <span className="text-primary font-bold tracking-[0.1em] sm:tracking-widest text-xs sm:text-sm uppercase">Why Choose Us?</span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-black text-foreground mt-3 sm:mt-4 uppercase leading-tight">
-            The Bloodline Standard of Excellence
+            The Car Club FSD Standard of Excellence
           </h2>
           <p className="text-muted-foreground mt-3 sm:mt-4 text-xs sm:text-sm md:text-base">
-            We don't just sell cars; we deliver a promise of quality, transparency, and trust that has built our reputation in Lahore.
+            We don't just sell cars; we deliver a promise of quality, transparency, and trust that has built our reputation in Faisalabad.
           </p>
         </div>
 

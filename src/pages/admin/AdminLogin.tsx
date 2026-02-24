@@ -44,7 +44,7 @@ export default function AdminLogin() {
           {/* Logo/Title */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-heading font-bold text-white">
-              BLOODLINE <span className="text-primary">MOTORS</span>
+              CAR CLUB <span className="text-primary">FSD</span>
             </h1>
             <p className="text-white/60 text-sm mt-2">Admin Portal</p>
           </div>

@@ -17,7 +17,7 @@ export default function ContactPage() {
     return () => window.removeEventListener('siteSettingsUpdated', h);
   }, []);
 
-  const phoneDisplay = settings.phone || '+92-313-4959787 | +92-327-0202782';
+  const phoneDisplay = settings.phone || '0325-6750000, +92 325 6750000';
   const workingHours = settings.workingHours || 'Mon - Sat: 10 AM - 8 PM\nSunday: 12 PM - 6 PM';
 
   return (
@@ -26,14 +26,14 @@ export default function ContactPage() {
       <Breadcrumbs />
       {/* Visual Header */}
       <div className="min-h-[300px] sm:min-h-[400px] md:min-h-[500px] bg-dark-surface relative flex items-center justify-center overflow-hidden">
-        <img src={heroImage} alt="Bloodline Motors" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+        <img src={heroImage} alt="Car Club FSD" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
         <div className="relative z-10 text-center px-4 sm:px-6">
           <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-heading font-black uppercase text-dark-surface-foreground tracking-tight mb-2 sm:mb-4 text-glow">
             Visit Our Showroom
           </h1>
           <p className="text-white/80 text-xs sm:text-base md:text-lg font-light tracking-wide">
-            Lahore's Premier Destination for Luxury Automobiles
+            Faisalabad's Trusted Car Dealership
           </p>
         </div>
       </div>
@@ -65,8 +65,8 @@ export default function ContactPage() {
                   </motion.div>
                   <h3 className="text-sm sm:text-base md:text-lg font-bold uppercase mb-2 text-foreground">Location</h3>
                   <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm">
-                    Lahore Johar Town<br/>
-                    Pakistan
+                    VF Centre, Jail Road<br/>
+                    Faisalabad, Pakistan
                   </p>
                 </div>
               </div>
@@ -98,7 +98,7 @@ export default function ContactPage() {
                 <h3 className="text-sm sm:text-base md:text-lg font-bold uppercase mb-2 text-foreground">Contact</h3>
                 <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm">
                   {phoneDisplay}<br/>
-                  sales@bloodlinemotors.com
+                  carclub001@outlook.com
                 </p>
               </div>
             </div>

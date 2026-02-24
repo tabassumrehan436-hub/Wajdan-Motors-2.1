@@ -11,18 +11,18 @@ import { saveSiteSettings } from "@/lib/siteSettings";
 export default function AdminSettings() {
   const { toast } = useToast();
   const [settings, setSettings] = useState({
-    businessName: "Bloodline Motors",
-    phone: "+92-313-4959787 | +92-327-0202782",
-    email: "sales@bloodlinemotors.com",
-    address: "Lahore Johar Town, Pakistan",
-    whatsappNumber: "923134959787",
+    businessName: "Car Club FSD",
+    phone: "0325-6750000, +92 325 6750000",
+    email: "carclub001@outlook.com",
+    address: "VF Centre, Jail Road, Faisalabad",
+    whatsappNumber: "923256750000",
     workingHours: "Mon-Sat: 10AM-8PM, Sun: 12PM-6PM",
   });
 
   // Load saved settings from localStorage on mount
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("bloodline_motors_settings");
+      const raw = localStorage.getItem("carclub_fsd_settings");
       if (raw) {
         const parsed = JSON.parse(raw);
         setSettings(prev => ({ ...prev, ...parsed }));
@@ -46,7 +46,7 @@ export default function AdminSettings() {
   const handleReset = () => {
     if (!confirm("This will reset local demo inquiries. Cars are now database-driven and will not be reset here. Continue?")) return;
     // only clear inquiries (cars are managed by the backend)
-    localStorage.removeItem("bloodline_motors_inquiries");
+    localStorage.removeItem("carclub_fsd_inquiries");
     toast({ title: "Demo Data Reset", description: "Local demo inquiries cleared. Cars remain in the database." });
     window.location.reload();
   };
@@ -104,7 +104,7 @@ export default function AdminSettings() {
                 <Input
                 value={settings.whatsappNumber}
                 onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
-                placeholder="923134959787"
+                placeholder="923256750000"
               />
             </div>
 

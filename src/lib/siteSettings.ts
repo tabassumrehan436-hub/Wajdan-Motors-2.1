@@ -7,7 +7,7 @@ export type SiteSettings = {
   workingHours?: string;
 };
 
-const STORAGE_KEY = "bloodline_motors_settings";
+const STORAGE_KEY = "carclub_fsd_settings";
 
 export function getSiteSettings(): SiteSettings {
   try {

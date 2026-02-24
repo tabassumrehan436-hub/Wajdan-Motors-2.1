@@ -26,7 +26,7 @@ export default function AdminDashboard() {
             className="mb-8"
           >
             <h1 className="text-3xl font-heading font-bold">Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back to Bloodline Motors Admin Panel</p>
+            <p className="text-muted-foreground">Welcome back to Car Club FSD Admin Panel</p>
           </motion.div>
 
           {/* Stats */}

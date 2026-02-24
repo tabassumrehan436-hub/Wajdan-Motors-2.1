@@ -17,7 +17,7 @@ export default function Hero() {
       {/* Background Image */}
       <motion.img
         src={heroImage}
-        alt="Bloodline Motors - Premium Car"
+        alt="Car Club FSD - Premium Car Dealership"
         loading="eager"
         decoding="async"
         width={1920}
@@ -41,10 +41,10 @@ export default function Hero() {
           className="w-full max-w-2xl"
         >
           <p className="text-primary font-bold text-xs sm:text-sm tracking-widest uppercase mb-2 sm:mb-3">
-            Lahore's Premium Dealer
+            Faisalabad's Trusted Car Dealer
           </p>
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] mb-1 sm:mb-2 tracking-tighter font-heading">
-            BLOODLINE MOTORS
+            CAR CLUB FSD
           </h1>
           <p className="text-white/70 text-base sm:text-lg md:text-xl font-light mb-6 sm:mb-8 tracking-wide">
             Buy · Sell · Exchange

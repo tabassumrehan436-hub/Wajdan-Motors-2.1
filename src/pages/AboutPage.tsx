@@ -10,9 +10,9 @@ import { getSiteSettings } from "@/lib/siteSettings";
 import { useState, useEffect } from "react";
 
 const stats = [
-  { value: "15+", label: "Years Experience" },
-  { value: "500+", label: "Happy Customers" },
-  { value: "1000+", label: "Cars Sold" },
+  { value: "14+", label: "Years Experience" },
+  { value: "1000+", label: "Happy Customers" },
+  { value: "2000+", label: "Cars Sold" },
   { value: "100%", label: "Verified Cars" },
 ];
 
@@ -40,12 +40,12 @@ const values = [
 ];
 
 const whyChooseUs = [
-  "Verified & Inspected Vehicles",
+  "All Categories of Vehicles (New, Used, Zero Meter, Bank Leased)",
+  "Professional Car Inspection & Detailing",
+  "Complete Documentation Assistance",
+  "Buy, Sell & Exchange Services",
+  "Biometric Services Available",
   "Transparent Pricing - No Hidden Fees",
-  "Easy Financing Options Available",
-  "Trade-in & Exchange Facility",
-  "After-Sales Support",
-  "Free Test Drive",
 ];
 
 export default function AboutPage() {
@@ -56,7 +56,7 @@ export default function AboutPage() {
     return () => window.removeEventListener('siteSettingsUpdated', h);
   }, []);
 
-  const phoneDisplay = settings.phone || '+92-313-4959787 | +92-327-0202782';
+  const phoneDisplay = settings.phone || '0325-6750000, +92 325 6750000';
   const workingHours = settings.workingHours || 'Mon - Sat: 10 AM - 8 PM\nSunday: 12 PM - 6 PM';
 
   return (
@@ -66,7 +66,7 @@ export default function AboutPage() {
       
       {/* Hero Section */}
       <section className="min-h-[400px] sm:min-h-[500px] md:min-h-[600px] bg-dark-surface relative flex items-center justify-center overflow-hidden">
-        <img src={heroImage} alt="Bloodline Motors" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+        <img src={heroImage} alt="Car Club FSD" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
         <motion.div 
           className="relative z-10 text-center px-4 sm:px-6"
@@ -75,10 +75,10 @@ export default function AboutPage() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-heading font-black uppercase text-dark-surface-foreground tracking-tight mb-3 sm:mb-4 text-glow">
-            About Bloodline Motors
+            About Car Club FSD
           </h1>
           <p className="text-white/80 text-xs sm:text-base md:text-lg lg:text-xl font-light tracking-wide max-w-2xl mx-auto">
-            Lahore's Most Trusted Name in Pre-Owned Automobiles Since 2009
+            Faisalabad's Trusted Car Dealership Since 2010
           </p>
         </motion.div>
       </section>
@@ -115,20 +115,13 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-3 sm:space-y-4 text-muted-foreground leading-relaxed text-xs sm:text-sm md:text-base">
                 <p>
-                  Bloodline Motors was founded in 2009 with a simple mission: to make buying a used car as 
-                  trustworthy and transparent as buying a new one. What started as a small showroom on 
-                  Lahore Johar Town has grown into a premier destination for pre-owned vehicles.
+                  Car Club FSD was established in 2010 with a mission to provide honest, transparent, and reliable car buying and selling services. Initially located at Eid Gah Road, we have grown into one of Faisalabad's most trusted car dealerships, now operating from our modern facility at VF Centre, Jail Road.
                 </p>
                 <p>
-                  Over the years, we've helped thousands of families find their perfect car. Our success 
-                  is built on three pillars: quality vehicles, honest dealings, and exceptional customer 
-                  service. Every car in our inventory is thoroughly inspected and comes with complete 
-                  documentation.
+                  Over the years, we've helped thousands of customers find their perfect vehicles. Our success is built on three pillars: quality vehicles, honest dealings, and exceptional customer service. We deal in all categories of vehicles including new, used, zero-meter, bank-leased, and home-used cars from major manufacturers.
                 </p>
                 <p>
-                  Today, we offer Buy, Sell, and Exchange services, making it easy for you to upgrade 
-                  your vehicle or find your first car. Whether you're looking for an economy hatchback 
-                  or a luxury SUV, we have the perfect ride waiting for you.
+                  Today, we offer comprehensive services including biometric services, car inspection, car detailing, and complete documentation assistance. Whether you're looking for an economy hatchback or a luxury SUV, we have the perfect car for your needs and budget.
                 </p>
               </div>
               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -149,14 +142,14 @@ export default function AboutPage() {
               <div className="aspect-square rounded-lg sm:rounded-2xl overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=800&auto=format&fit=crop" 
-                  alt="Bloodline Motors Showroom" 
+                  alt="Car Club FSD Showroom" 
                   className="w-full h-full object-cover"
                 />
               </div>
               {/* Floating card */}
               <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-card p-4 sm:p-6 rounded-lg sm:rounded-2xl border border-border shadow-xl max-w-[160px] sm:max-w-[200px]">
-                <div className="text-3xl sm:text-4xl font-heading font-black text-primary">15+</div>
-                <div className="text-[10px] sm:text-sm text-muted-foreground">Years of Excellence in Lahore</div>
+                <div className="text-3xl sm:text-4xl font-heading font-black text-primary">14+</div>
+                <div className="text-[10px] sm:text-sm text-muted-foreground">Years of Excellence in Faisalabad</div>
               </div>
             </motion.div>
           </div>
@@ -222,7 +215,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-primary font-bold uppercase tracking-widest text-[10px] sm:text-xs">Why Bloodline Motors</span>
+              <span className="text-primary font-bold uppercase tracking-widest text-[10px] sm:text-xs">Why Car Club FSD</span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-black uppercase mt-2 mb-4 sm:mb-6">
                 Your Trusted Partner
               </h2>
@@ -261,8 +254,8 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xs sm:text-sm md:text-lg font-bold uppercase mb-2 group-hover:text-primary transition-colors">Location</h3>
                 <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm group-hover:text-primary transition-colors">
-                  Lahore Johar Town<br/>
-                  Pakistan
+                  VF Centre, Jail Road<br/>
+                  Faisalabad, Pakistan
                 </p>
               </div>
             </div>
@@ -273,7 +266,7 @@ export default function AboutPage() {
               <h3 className="text-xs sm:text-sm md:text-lg font-bold uppercase mb-2">Contact</h3>
               <p className="text-muted-foreground leading-relaxed text-xs sm:text-sm">
                 {phoneDisplay}<br/>
-                sales@bloodlinemotors.com
+                carclub001@outlook.com
               </p>
             </div>
             <div className="bg-background p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-2xl border border-border">

@@ -12,7 +12,7 @@ export interface Inquiry {
   status: "new" | "contacted" | "closed";
 }
 
-const INQUIRIES_KEY = "bloodline_motors_inquiries";
+const INQUIRIES_KEY = "carclub_fsd_inquiries";
 
 export function getInquiries(): Inquiry[] {
   const stored = localStorage.getItem(INQUIRIES_KEY);
@@ -62,7 +62,7 @@ export interface Order {
   created_at?: string;
 }
 
-const ORDERS_KEY = 'bloodline_motors_orders';
+const ORDERS_KEY = 'carclub_fsd_orders';
 
 export function getOrders(): Order[] {
   const stored = localStorage.getItem(ORDERS_KEY);

@@ -44,7 +44,7 @@ export default function CarDetailPage() {
     load();
   }, [id, cars]);
   // Contact number (country code + number without +)
-  const PHONE_NUMBER = "923134959787";
+  const PHONE_NUMBER = "923256750000";
 
   const handleCallNow = () => {
     window.location.href = `tel:+${PHONE_NUMBER}`;
@@ -379,7 +379,7 @@ export default function CarDetailPage() {
               className="flex items-center gap-2 text-muted-foreground text-xs sm:text-sm"
             >
               <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-              <span>Bloodline Motors, Lahore, Pakistan</span>
+              <span>Car Club FSD, Faisalabad, Pakistan</span>
             </motion.div>
           </motion.div>
         </div>

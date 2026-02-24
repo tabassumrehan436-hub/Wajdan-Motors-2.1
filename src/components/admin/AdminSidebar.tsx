@@ -51,7 +51,7 @@ export default function AdminSidebar() {
           {/* Logo */}
           <div className="p-6 border-b border-border">
             <Link to="/" className="flex items-center gap-3">
-              <img src={logo} alt="Bloodline Motors" className="h-10 w-auto" />
+              <img src={logo} alt="Car Club FSD" className="h-10 w-auto" />
             </Link>
           </div>
 

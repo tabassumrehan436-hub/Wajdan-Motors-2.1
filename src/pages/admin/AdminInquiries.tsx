@@ -43,7 +43,7 @@ export default function AdminInquiries() {
   };
 
   const handleWhatsApp = (phone: string, name: string) => {
-    const message = encodeURIComponent(`Assalam o Alaikum ${name}, regarding your inquiry at Bloodline Motors...`);
+    const message = encodeURIComponent(`Assalam o Alaikum ${name}, regarding your inquiry at Car Club FSD...`);
     window.open(`https://wa.me/${phone.replace(/\D/g, "")}?text=${message}`, "_blank");
   };
 
